@@ -1,2 +1,2 @@
 # eventID-app
-Android application
+Android application for cognition
