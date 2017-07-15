@@ -1,3 +1,4 @@
 <resources >
     <string name = "app_name" >Event</string >
+    <string name="forgot_password_msg">Enter your email address to reset your password.You may need to check your spam folder or unblock no-reply@aviato.tk</string>
 </resources >
