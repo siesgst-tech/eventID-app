@@ -1,4 +1,9 @@
 <resources >
     <string name = "app_name" >Event</string >
-    <string name="forgot_password_msg">Enter your email address to reset your password.You may need to check your spam folder or unblock no-reply@aviato.tk</string>
+    <string name = "forgot_password_msg" >Enter your email address to reset your password.You may need to check your spam folder or unblock no-reply@aviato.tk</string >
+    <string name = "title_activity_home" >Home</string >
+    <string name = "action_settings" >Settings</string >
+    <string name = "action_logout" >Logout</string >
+    <string name = "action_messages" >Messages</string >
+    <string name = "section_format" >Hello World from section: %1$d</string >
 </resources >
