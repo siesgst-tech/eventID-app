@@ -1,5 +1,7 @@
 package com.example.event.adapters;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +21,14 @@ import java.util.List;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder>
 {
 	List<EventsModel> eventsModelList = new ArrayList<EventsModel>();
+	Context context;
+	Typeface ttf;
 	
-	public EventsAdapter(List<EventsModel> eventsModelList)
+	public EventsAdapter(List<EventsModel> eventsModelList, Context context, Typeface ttf)
 	{
 		this.eventsModelList = eventsModelList;
+		this.context = context;
+		this.ttf = ttf;
 	}
 	
 	@Override
@@ -36,7 +42,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 	public void onBindViewHolder(ViewHolder holder, int position)
 	{
 		holder.name.setText(eventsModelList.get(position).getEventName());
-		holder.cost.setText("Rs. "+eventsModelList.get(position).getCost());
+		holder.inr.setTypeface(ttf);
+		holder.inr.setText(context.getString(R.string.fa_inr));
+		holder.cost.setText(" "+eventsModelList.get(position).getCost());
+		holder.description.setText(eventsModelList.get(position).getDescription());
 	}
 	
 	@Override
@@ -50,13 +59,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 	
 	class ViewHolder extends RecyclerView.ViewHolder
 	{
-		TextView name,cost;
+		TextView name,cost,description,inr;
 		
 		public ViewHolder(View itemView)
 		{
 			super(itemView);
 			name = (TextView) itemView.findViewById(R.id.event_name);
 			cost = (TextView) itemView.findViewById(R.id.event_cost);
+			inr = (TextView) itemView.findViewById(R.id.inr_fa);
+			description = (TextView) itemView.findViewById(R.id.event_description);
 		}
 	}
 	

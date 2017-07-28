@@ -7,12 +7,24 @@ package com.example.event.model;
 public class EventsModel
 {
 	String eventName;
+	String description;
 	String cost;
 	
-	public EventsModel(String eventName, String cost)
+	public EventsModel(String eventName, String description, String cost)
 	{
 		this.eventName = eventName;
+		this.description = description;
 		this.cost = cost;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 	
 	public String getCost()

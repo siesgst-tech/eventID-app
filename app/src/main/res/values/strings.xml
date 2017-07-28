@@ -6,4 +6,20 @@
     <string name = "action_logout" >Logout</string >
     <string name = "action_messages" >Messages</string >
     <string name = "section_format" >Hello World from section: %1$d</string >
+    <string name = "description" >This will be the description of the event. I dont know what to write here. I know I was an event head but still, tab bhi nahi likha ab bhi nahi likhunga.</string >
+	
+	<!--path for fonts-->
+	<string name = "font_merriweather_bold" >fonts/Merriweather-Bold.ttf</string >
+    <string name = "font_merriweather_reg" >fonts/Merriweather-Regular.ttf</string >
+    <string name = "font_opensans_bold" >fonts/OpenSans-Bold.ttf</string >
+    <string name = "font_opensans_italic" >fonts/OpenSans-Italic.ttf</string >
+    <string name = "font_opensans_light" >fonts/OpenSans-Light.ttf</string >
+    <string name = "font_opensans_regular" >fonts/OpenSans-Regular.ttf</string >
+    <string name = "font_opensans_semi" >fonts/OpenSans-SemiBold.ttf</string >
+    <string name = "font_fontawesome" >fonts/fontawesome-webfont.ttf</string >
+	<string name = "font_roboto_thin" >fonts/roboto/Roboto-Thin.ttf</string >
+	
+	<!--font awesome icons-->
+	<string name = "fa_inr" >&#xf156;</string >
+	
 </resources >

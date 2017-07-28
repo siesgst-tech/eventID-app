@@ -1,9 +1,9 @@
 package com.example.event.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -68,12 +68,12 @@ public class HomeActivity extends AppCompatActivity
 		int id = item.getItemId();
 		if (id == R.id.action_messages)
 		{
-			Snackbar.make(findViewById(R.id.home_activity), "Messages clicked", Snackbar.LENGTH_SHORT).show();
+			startActivity(new Intent(HomeActivity.this,MessagesActivity.class));
 			return true;
 		}
 		else if (id == R.id.action_settings)
 		{
-			Snackbar.make(findViewById(R.id.home_activity), "Settings clicked", Snackbar.LENGTH_SHORT).show();
+			startActivity(new Intent(HomeActivity.this,SettingsActivity.class));
 			return true;
 		}
 		else if (id == R.id.action_logout)

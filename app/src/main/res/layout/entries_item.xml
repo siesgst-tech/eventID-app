@@ -2,26 +2,32 @@
 <RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
                 xmlns:tools = "http://schemas.android.com/tools"
                 android:layout_width = "match_parent"
-                android:layout_height = "wrap_content" >
+                android:layout_height = "wrap_content"
+                xmlns:app = "http://schemas.android.com/apk/res-auto" >
 	
-	<View
-	 android:id = "@+id/entry_separator"
+	<android.support.v7.widget.CardView
 	 android:layout_width = "match_parent"
-	 android:layout_height = "2dp"
-	 android:background = "#bdbdbd" />
-	
-	<TextView
-	 android:id = "@+id/entry_name"
-	 android:layout_width = "wrap_content"
 	 android:layout_height = "wrap_content"
-	 android:layout_below = "@id/entry_separator"
-	 android:paddingBottom = "4dp"
-	 android:paddingEnd = "8dp"
-	 android:paddingStart = "8dp"
-	 android:paddingTop = "4dp"
-	 android:textSize = "24sp"
-	 android:textStyle = "bold"
-	 tools:text = "Rohit Ramaswamy" />
+	 android:padding="4dp"
+	 android:layout_margin="4dp"
+	 app:cardElevation ="3dp">
+		
+		
+		<RelativeLayout
+		 android:layout_width = "match_parent"
+		 android:layout_height = "wrap_content" >
+			
+			<TextView
+			 android:id = "@+id/entry_name"
+			 android:layout_width = "wrap_content"
+			 android:layout_height = "wrap_content"
+			 android:paddingBottom = "4dp"
+			 android:paddingEnd = "8dp"
+			 android:paddingStart = "8dp"
+			 android:paddingTop = "4dp"
+			 android:textSize = "24sp"
+			 android:textStyle = "bold"
+			 tools:text = "Rohit Ramaswamy" />
 	
 	<TextView
 	 android:id = "@+id/entry_prn"
@@ -34,5 +40,11 @@
 	 android:paddingTop = "4dp"
 	 android:textSize = "18sp"
 	 tools:text = "115A1018" />
+			
+		</RelativeLayout >
+		
+	</android.support.v7.widget.CardView >
+	
+	
 	
 </RelativeLayout >
