@@ -40,6 +40,20 @@ public class Constants
 	public static final String MESSAGE_MESSAGE = "message";
 	
 	
+	// shared pref
+	public static final String IS_LOGIN = "false";
+	public static final String EMAIL = "ANDROID.STUDIO@ANDROID.COM";
+	public static final String FIRST_NAME = "ANDROID";
+	public static final String LAST_NAME = "STUDIO";
+	public static final String FULL_NAME = "ANDROID STUDIO";
+	
+	
+	public static final String auth_token = "Authorization";
+	public static final String LOGIN_NAME = "ANDROID STUDIO LOGIN";
+	public static final String LOGIN_PRN = "115A1018";
+	public static final String LOGIN_BRANCH = "CE";
+	public static final String LOGIN_YEAR = "TE";
+	public static final String LOGIN_ROLE = "ADMIN";
 	
 	
 }

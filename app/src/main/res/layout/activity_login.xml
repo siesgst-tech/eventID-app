@@ -104,6 +104,16 @@
 	 android:textColor = "@color/blue"
 	 android:textSize = "20sp" />
 		
+		
+		
+		<ProgressBar
+		 android:layout_width = "30dp"
+		 android:layout_height = "30dp"
+		 android:layout_below="@id/login_btn"
+		 android:layout_centerHorizontal="true"
+		 android:id="@+id/login_progress"
+		 android:visibility="invisible"/>
+		
 	</RelativeLayout >
 	
 	<RelativeLayout
