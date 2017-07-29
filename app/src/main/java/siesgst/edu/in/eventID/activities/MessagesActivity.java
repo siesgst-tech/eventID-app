@@ -36,7 +36,7 @@ public class MessagesActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_messages);
 		sessionManager = new SessionManager(MessagesActivity.this);
-		if(getSupportActionBar()!=null)
+		if (getSupportActionBar() != null)
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -51,31 +51,31 @@ public class MessagesActivity extends AppCompatActivity
 	
 	public void init()
 	{
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
-		messages.add(new MessagesModel("Maze Bot","Title goes here","Description goes here. Description goes here. Description goes here. Description goes here. " +
+		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
 	}
 	
@@ -87,7 +87,7 @@ public class MessagesActivity extends AppCompatActivity
 		{
 			
 		}*/
-		getMenuInflater().inflate(R.menu.messages_menu,menu);
+		getMenuInflater().inflate(R.menu.messages_menu, menu);
 		return true;
 //		else
 //		{
@@ -99,20 +99,21 @@ public class MessagesActivity extends AppCompatActivity
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		int id = item.getItemId();
-		if(id==android.R.id.home)
+		if (id == android.R.id.home)
 		{
 			onBackPressed();
 			finish();
 			return true;
 		}
-		else if(id== R.id.new_message)
+		else if (id == R.id.new_message)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			LayoutInflater inflater = MessagesActivity.this.getLayoutInflater();
 			final View view = inflater.inflate(R.layout.new_message_layout, null);
 			builder.setView(view);
 			
-			builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+			builder.setPositiveButton("Send", new DialogInterface.OnClickListener()
+			{
 				@Override
 				public void onClick(DialogInterface dialogInterface, int i)
 				{
@@ -121,14 +122,15 @@ public class MessagesActivity extends AppCompatActivity
 					
 					String title = titleInput.getText().toString();
 					String content = contentInput.getText().toString();
-					Log.v("title",title);
-					Log.v("content",content);
-					messages.add(new MessagesModel(MessagesActivity.this.getSharedPreferences(SessionManager.PREF_NAME,SessionManager.PRIVATE_MODE).getString("EVENT_NAME","event_name"),title,content));
+					Log.v("title", title);
+					Log.v("content", content);
+					messages.add(new MessagesModel(MessagesActivity.this.getSharedPreferences(SessionManager.PREF_NAME, SessionManager.PRIVATE_MODE).getString("EVENT_NAME", "event_name"), title, content));
 					adapter.notifyDataSetChanged();
-					Toast.makeText(MessagesActivity.this,"Message sent",Toast.LENGTH_SHORT).show();
+					Toast.makeText(MessagesActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
 				}
 			});
-			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+			{
 				@Override
 				public void onClick(DialogInterface dialogInterface, int i)
 				{

@@ -28,7 +28,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	@Override
 	public EntriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entries_item,parent,false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entries_item, parent, false);
 		return new EntriesViewHolder(view);
 	}
 	
@@ -45,7 +45,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		if (entriesModelList == null)
 		{ return 0; }
 		else
-		{ return (int)entriesModelList.size(); }
+		{ return (int) entriesModelList.size(); }
 	}
 	
 	class EntriesViewHolder extends RecyclerView.ViewHolder

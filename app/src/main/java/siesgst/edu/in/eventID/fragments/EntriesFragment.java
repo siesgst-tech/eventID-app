@@ -42,15 +42,15 @@ public class EntriesFragment extends Fragment
 	
 	private void init()
 	{
-		entriesModelList.add(new EntriesModel("Rohit Ramaswamy","115A1018"));
-		entriesModelList.add(new EntriesModel("Omkar Prabhu","115A1077"));
-		entriesModelList.add(new EntriesModel("Aditya Nair","115A1067"));
-		entriesModelList.add(new EntriesModel("Vinay Ambre","115A1031"));
-		entriesModelList.add(new EntriesModel("Aditya Kulkarni","115A1061"));
-		entriesModelList.add(new EntriesModel("Shivshankar Ravi","115A1019"));
-		entriesModelList.add(new EntriesModel("Siddhesh Shinde","115A1091"));
-		entriesModelList.add(new EntriesModel("Pradyumna Bapat","115A1038"));
-		entriesModelList.add(new EntriesModel("Abhinandan Gupta","115A1049"));
-		entriesModelList.add(new EntriesModel("Vipul Singh Raghuvanshi","115A1099"));
+		entriesModelList.add(new EntriesModel("Rohit Ramaswamy", "115A1018"));
+		entriesModelList.add(new EntriesModel("Omkar Prabhu", "115A1077"));
+		entriesModelList.add(new EntriesModel("Aditya Nair", "115A1067"));
+		entriesModelList.add(new EntriesModel("Vinay Ambre", "115A1031"));
+		entriesModelList.add(new EntriesModel("Aditya Kulkarni", "115A1061"));
+		entriesModelList.add(new EntriesModel("Shivshankar Ravi", "115A1019"));
+		entriesModelList.add(new EntriesModel("Siddhesh Shinde", "115A1091"));
+		entriesModelList.add(new EntriesModel("Pradyumna Bapat", "115A1038"));
+		entriesModelList.add(new EntriesModel("Abhinandan Gupta", "115A1049"));
+		entriesModelList.add(new EntriesModel("Vipul Singh Raghuvanshi", "115A1099"));
 	}
 }

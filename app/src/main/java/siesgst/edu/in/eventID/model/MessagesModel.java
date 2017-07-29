@@ -6,7 +6,7 @@ package siesgst.edu.in.eventID.model;
 
 public class MessagesModel
 {
-	String event_name,title,description;
+	String event_name, title, description;
 	
 	public MessagesModel(String event_name, String title, String description)
 	{

@@ -49,9 +49,9 @@ public class HomeActivity extends AppCompatActivity
 	private void setUpViewPager(ViewPager viewPager)
 	{
 		HomeTabLayoutAdapter adapter = new HomeTabLayoutAdapter(getSupportFragmentManager());
-		adapter.addFrag(entriesFragment,"Entries");
+		adapter.addFrag(entriesFragment, "Entries");
 		Fragment eventFragment = new EventsFragment();
-		adapter.addFrag(eventFragment,"Events");
+		adapter.addFrag(eventFragment, "Events");
 		viewPager.setAdapter(adapter);
 	}
 	
@@ -76,8 +76,10 @@ public class HomeActivity extends AppCompatActivity
 			new AlertDialog.Builder(HomeActivity.this)
 					.setMessage("Do you want to Log out ?")
 					.setCancelable(false)
-					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
+					.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int id)
+						{
 							sessionManager.logoutUser();
 							finish();
 						}

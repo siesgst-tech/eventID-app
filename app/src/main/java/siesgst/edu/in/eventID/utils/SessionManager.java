@@ -40,25 +40,25 @@ public class SessionManager
 	}
 	
 	// method to initialise login
-	public void createLoginSession(String email, String name, String event_name,String prn,String branch,String role,String year)
+	public void createLoginSession(String email, String name, String event_name, String prn, String branch, String role, String year)
 	{
 		editor.putBoolean(Constants.IS_LOGIN, true);
 		editor.putString(Constants.EVENT_NAME, event_name);
 		editor.putString(Constants.FULL_NAME, name);
 		editor.putString(Constants.EMAIL, email);
-		editor.putString(Constants.LOGIN_PRN,prn);
-		editor.putString(Constants.LOGIN_BRANCH,branch);
-		editor.putString(Constants.LOGIN_YEAR,year);
-		editor.putString(Constants.LOGIN_ROLE,role);
+		editor.putString(Constants.LOGIN_PRN, prn);
+		editor.putString(Constants.LOGIN_BRANCH, branch);
+		editor.putString(Constants.LOGIN_YEAR, year);
+		editor.putString(Constants.LOGIN_ROLE, role);
 		editor.apply();
 		
 		
-		Log.v("sp name",sharedPreferences.getString(Constants.FULL_NAME,"full_name"));
-		Log.v("sp name",sharedPreferences.getString(Constants.EMAIL,"email"));
-		Log.v("sp name",sharedPreferences.getString(Constants.LOGIN_PRN,"prn"));
-		Log.v("sp name",sharedPreferences.getString(Constants.LOGIN_BRANCH,"branch"));
-		Log.v("sp name",sharedPreferences.getString(Constants.LOGIN_YEAR,"year"));
-		Log.v("sp name",sharedPreferences.getString(Constants.LOGIN_ROLE,"role"));
+		Log.v("sp name", sharedPreferences.getString(Constants.FULL_NAME, "full_name"));
+		Log.v("sp name", sharedPreferences.getString(Constants.EMAIL, "email"));
+		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_PRN, "prn"));
+		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_BRANCH, "branch"));
+		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_YEAR, "year"));
+		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_ROLE, "role"));
 		
 	}
 	
@@ -115,12 +115,12 @@ public class SessionManager
 	
 	public String getToken()
 	{
-		return sharedPreferences.getString(auth_token,"null");
+		return sharedPreferences.getString(auth_token, "null");
 	}
 	
 	public void setAuth_token(String auth_token1)
 	{
-		editor.putString(Constants.auth_token,auth_token1);
+		editor.putString(Constants.auth_token, auth_token1);
 		editor.apply();
 	}
 	

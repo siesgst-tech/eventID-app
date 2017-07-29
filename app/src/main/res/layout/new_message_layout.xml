@@ -8,35 +8,35 @@
 	<TextView
 	 android:layout_width = "match_parent"
 	 android:layout_height = "wrap_content"
-	 android:padding="16dp"
-	 android:text="Enter the message you want to send."
-	 android:textStyle="bold"
-	 android:textSize="18sp"/>
+	 android:padding = "16dp"
+	 android:text = "Enter the message you want to send."
+	 android:textSize = "18sp"
+	 android:textStyle = "bold" />
 	
 	
 	<android.support.design.widget.TextInputLayout
 	 android:id = "@+id/title_til"
 	 android:layout_width = "match_parent"
 	 android:layout_height = "wrap_content"
-	 android:padding="16dp">
+	 android:padding = "16dp" >
 		
 	
 		<EditText
-	        android:id = "@+id/title_edit"
-	        android:layout_width = "match_parent"
-	        android:layout_height = "wrap_content"
-	        android:hint = "Title"
-	        android:textSize = "22sp" />
+		 android:id = "@+id/title_edit"
+		 android:layout_width = "match_parent"
+		 android:layout_height = "wrap_content"
+		 android:hint = "Title"
+		 android:textSize = "22sp" />
 	
 	</android.support.design.widget.TextInputLayout >
 	
 
 	
 	<android.support.design.widget.TextInputLayout
-	    android:id = "@+id/content_til"
-	    android:padding="16dp"
-	    android:layout_width = "match_parent"
-	    android:layout_height = "wrap_content">
+	 android:id = "@+id/content_til"
+	 android:layout_width = "match_parent"
+	 android:layout_height = "wrap_content"
+	 android:padding = "16dp" >
 		
 		<EditText
 		 android:id = "@+id/content_edit"

@@ -2,8 +2,9 @@
 <menu xmlns:android = "http://schemas.android.com/apk/res/android"
       xmlns:app = "http://schemas.android.com/apk/res-auto" >
   
-	<item android:title="New message"
-	      android:id="@+id/new_message"
-	      app:showAsAction ="never"/>
+	<item
+	 android:id = "@+id/new_message"
+	 android:title = "New message"
+	 app:showAsAction = "never" />
 	
 </menu >

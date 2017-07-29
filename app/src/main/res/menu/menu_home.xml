@@ -5,9 +5,9 @@
 	
 	<item
 	 android:id = "@+id/action_messages"
+	 android:orderInCategory = "100"
 	 android:title = "Messages"
-	 app:showAsAction = "never"
-	 android:orderInCategory="100"/>
+	 app:showAsAction = "never" />
 	
     <item
      android:id = "@+id/action_logout"

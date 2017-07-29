@@ -4,25 +4,25 @@
  xmlns:tools = "http://schemas.android.com/tools"
  android:layout_width = "match_parent"
  android:layout_height = "match_parent"
- android:background="@color/background"
+ android:background = "@color/background"
  tools:context = "siesgst.edu.in.eventID.activities.SplashActivity" >
 
     <ImageView
      android:id = "@+id/splash_hero"
      android:layout_width = "300dp"
      android:layout_height = "400dp"
-     android:src = "@drawable/rocket"
-     android:layout_centerInParent="true" />
+     android:layout_centerInParent = "true"
+     android:src = "@drawable/rocket" />
     
     <TextView
+     android:id = "@+id/splash_txt"
+     fontPath = "fonts/OpenSans-Light.ttf"
      android:layout_width = "wrap_content"
      android:layout_height = "wrap_content"
      android:layout_below = "@id/splash_hero"
      android:layout_centerHorizontal = "true"
      android:text = "Event id app"
-     android:id="@+id/splash_txt"
-     fontPath="fonts/OpenSans-Light.ttf"
-     android:textColor="@android:color/black"
+     android:textColor = "@android:color/black"
      android:textSize = "22sp"
      tools:ignore = "MissingPrefix" />
 

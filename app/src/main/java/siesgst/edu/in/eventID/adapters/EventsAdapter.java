@@ -34,7 +34,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item,parent,false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, parent, false);
 		return new ViewHolder(view);
 	}
 	
@@ -44,22 +44,22 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 		holder.name.setText(eventsModelList.get(position).getEventName());
 		holder.inr.setTypeface(ttf);
 		holder.inr.setText(context.getString(R.string.fa_inr));
-		holder.cost.setText(" "+eventsModelList.get(position).getCost());
+		holder.cost.setText(" " + eventsModelList.get(position).getCost());
 		holder.description.setText(eventsModelList.get(position).getDescription());
 	}
 	
 	@Override
 	public int getItemCount()
 	{
-		if(eventsModelList==null)
-		return 0;
+		if (eventsModelList == null)
+		{ return 0; }
 		else
-			return (int) eventsModelList.size();
+		{ return (int) eventsModelList.size(); }
 	}
 	
 	class ViewHolder extends RecyclerView.ViewHolder
 	{
-		TextView name,cost,description,inr;
+		TextView name, cost, description, inr;
 		
 		public ViewHolder(View itemView)
 		{

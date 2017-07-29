@@ -31,8 +31,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item,parent,false);
-		return  new ViewHolder(view);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
+		return new ViewHolder(view);
 	}
 	
 	@Override
@@ -46,18 +46,18 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 	@Override
 	public int getItemCount()
 	{
-		if(messagesModels==null)
+		if (messagesModels == null)
 		{
 			return 0;
 		}
 		else
-			return (int) messagesModels.size();
+		{ return (int) messagesModels.size(); }
 	}
 	
 	class ViewHolder extends RecyclerView.ViewHolder
 	{
 		
-		TextView event_name,title,content;
+		TextView event_name, title, content;
 		
 		public ViewHolder(View itemView)
 		{

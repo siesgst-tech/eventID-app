@@ -16,6 +16,7 @@ public class SplashActivity extends AppCompatActivity
 	private static final String TAG = SplashActivity.class.getSimpleName();
 	private static final int SPLASH_TIME_OUT = 1000;
 	SessionManager sessionManager;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -33,7 +34,7 @@ public class SplashActivity extends AppCompatActivity
 			@Override
 			public void run()
 			{
-				if(sessionManager.isLoggedIn())
+				if (sessionManager.isLoggedIn())
 				{
 					startActivity(new Intent(SplashActivity.this, HomeActivity.class));
 					finish();

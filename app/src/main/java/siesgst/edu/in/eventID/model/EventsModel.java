@@ -10,7 +10,7 @@ public class EventsModel
 	String description;
 	String cost;
 	
-	public EventsModel(){}
+	public EventsModel() {}
 	
 	public EventsModel(String eventName, String description, String cost)
 	{

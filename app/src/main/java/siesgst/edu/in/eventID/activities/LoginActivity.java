@@ -34,12 +34,12 @@ public class LoginActivity extends AppCompatActivity
 	Button login, submit_forgot;
 	TextView forgot;
 	String email_entered, password_entered, first_name, last_name;
-	String id,name,prn,branch,year,role;
+	String id, name, prn, branch, year, role;
 	RelativeLayout login_layout, forgot_layout;
 	SessionManager sessionManager;
+	ProgressBar progressBar;
 	private RequestQueue queue;
 	private StringRequest stringRequest;
-	ProgressBar progressBar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -83,15 +83,15 @@ public class LoginActivity extends AppCompatActivity
 					{
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
-						String url = "http://192.168.43.221/api/login?email="+email_entered+"&password="+password_entered;
+						String url = "http://192.168.43.221/api/login?email=" + email_entered + "&password=" + password_entered;
 						
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
 							@Override
 							public void onResponse(String response)
 							{
-								Log.v(TAG+"response",response);
-								if(response.contains("success"))
+								Log.v(TAG + "response", response);
+								if (response.contains("success"))
 								{
 									
 									// parsing the response
@@ -115,37 +115,38 @@ public class LoginActivity extends AppCompatActivity
 									
 									first_name = email_entered.substring(0, email_entered.indexOf("."));
 									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
-									sessionManager.createLoginSession(email_entered,name,"Maze bot",prn,branch,role,year);
+									sessionManager.createLoginSession(email_entered, name, "Maze bot", prn, branch, role, year);
 									Log.v(TAG, "email: " + email_entered);
 									Log.v(TAG, "password: " + password_entered);
 									progressBar.setVisibility(View.INVISIBLE);
 									finish();
 									startActivity(new Intent(LoginActivity.this, HomeActivity.class));
 								}
-								else if(response.contains("fail"))
+								else if (response.contains("fail"))
 								{
 									progressBar.setVisibility(View.INVISIBLE);
-									if(response.contains("email"))
+									if (response.contains("email"))
 									{
-										Snackbar.make(findViewById(R.id.activity_login),"This user does not exist",Snackbar.LENGTH_SHORT).show();
+										Snackbar.make(findViewById(R.id.activity_login), "This user does not exist", Snackbar.LENGTH_SHORT).show();
 										email.setText("");
 										password.setText("");
 									}
-									else if(response.contains("Password"))
+									else if (response.contains("Password"))
 									{
-										Snackbar.make(findViewById(R.id.activity_login),"Incorrect password",Snackbar.LENGTH_SHORT).show();
+										Snackbar.make(findViewById(R.id.activity_login), "Incorrect password", Snackbar.LENGTH_SHORT).show();
 										password.setText("");
 									}
 								}
 								
 							}
-						}, new Response.ErrorListener() {
+						}, new Response.ErrorListener()
+						{
 							@Override
 							public void onErrorResponse(VolleyError error)
 							{
 								progressBar.setVisibility(View.INVISIBLE);
-								Snackbar.make(findViewById(R.id.activity_login),"Please check your credentials",Snackbar.LENGTH_SHORT).show();
-								Log.v(TAG,error.toString());
+								Snackbar.make(findViewById(R.id.activity_login), "Please check your credentials", Snackbar.LENGTH_SHORT).show();
+								Log.v(TAG, error.toString());
 							}
 						})
 						{
@@ -153,17 +154,17 @@ public class LoginActivity extends AppCompatActivity
 							protected Response<String> parseNetworkResponse(NetworkResponse response)
 							{
 								String gg = response.headers.get("Authorization");
-								Log.v(TAG+"header","   "+gg);
+								Log.v(TAG + "header", "   " + gg);
 								sessionManager.setAuth_token(gg);
-								Log.v(TAG+"tokenshared","   "+sessionManager.getToken());
-								if((sessionManager.getToken().equals("null")))
+								Log.v(TAG + "tokenshared", "   " + sessionManager.getToken());
+								if ((sessionManager.getToken().equals("null")))
 								{
 //									Toast.makeText(LoginActivity.this,"Some error",Toast.LENGTH_SHORT).show();
-									Log.v(TAG,"some error");
+									Log.v(TAG, "some error");
 								}
 								else
 								{
-									Log.v(TAG,"correct password");
+									Log.v(TAG, "correct password");
 								}
 								return super.parseNetworkResponse(response);
 							}

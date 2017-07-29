@@ -11,10 +11,10 @@
 	 android:layout_width = "match_parent"
 	 android:layout_height = "wrap_content"
 	 android:layout_margin = "4dp"
-	 android:paddingStart="4dp"
-	 android:paddingEnd="4dp"
-	 android:paddingTop="2dp"
-	 android:paddingBottom="2dp"
+	 android:paddingBottom = "2dp"
+	 android:paddingEnd = "4dp"
+	 android:paddingStart = "4dp"
+	 android:paddingTop = "2dp"
 	 app:cardElevation = "3dp" >
 		
 		
