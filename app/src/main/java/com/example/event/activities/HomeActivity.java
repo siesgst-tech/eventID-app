@@ -71,11 +71,6 @@ public class HomeActivity extends AppCompatActivity
 			startActivity(new Intent(HomeActivity.this,MessagesActivity.class));
 			return true;
 		}
-		else if (id == R.id.action_settings)
-		{
-			startActivity(new Intent(HomeActivity.this,SettingsActivity.class));
-			return true;
-		}
 		else if (id == R.id.action_logout)
 		{
 			new AlertDialog.Builder(HomeActivity.this)
