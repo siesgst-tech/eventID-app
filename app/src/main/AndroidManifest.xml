@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android = "http://schemas.android.com/apk/res/android"
-          package = "com.example.event" >
+          package = "siesgst.edu.in.eventID" >
 
     <application
      android:allowBackup = "true"
@@ -10,7 +10,7 @@
      android:supportsRtl = "true"
      android:theme = "@style/AppTheme" >
         <activity
-         android:name = ".activities.SplashActivity"
+         android:name = "siesgst.edu.in.eventID.activities.SplashActivity"
          android:screenOrientation = "portrait"
          android:theme = "@style/Theme.AppCompat.Light.NoActionBar" >
             <intent-filter >
@@ -20,16 +20,16 @@
             </intent-filter >
         </activity >
         <activity
-         android:name = ".activities.LoginActivity"
+         android:name = "siesgst.edu.in.eventID.activities.LoginActivity"
          android:screenOrientation = "portrait"
          android:theme = "@style/custom_login" >
         </activity >
         <activity
-         android:name = ".activities.HomeActivity"
+         android:name = "siesgst.edu.in.eventID.activities.HomeActivity"
          android:label = "@string/title_activity_home"
          android:theme = "@style/AppTheme.NoActionBar" >
         </activity >
-        <activity android:name = ".activities.MessagesActivity" >
+        <activity android:name = "siesgst.edu.in.eventID.activities.MessagesActivity" >
         </activity >
     </application >
 

@@ -5,8 +5,7 @@
  xmlns:tools = "http://schemas.android.com/tools"
  android:layout_width = "match_parent"
  android:layout_height = "match_parent"
- android:background="#bdbdbd"
- tools:context = "com.example.event.activities.MessagesActivity" >
+ tools:context = "siesgst.edu.in.eventID.activities.MessagesActivity" >
 
 	<android.support.v7.widget.RecyclerView
 	 android:layout_width = "match_parent"
