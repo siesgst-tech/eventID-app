@@ -9,6 +9,7 @@ import android.util.Log;
 
 import siesgst.edu.in.eventID.activities.LoginActivity;
 
+import static siesgst.edu.in.eventID.utils.Constants.EVENT_ID;
 import static siesgst.edu.in.eventID.utils.Constants.EVENT_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.FULL_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.IS_LOGIN;
@@ -40,25 +41,26 @@ public class SessionManager
 	}
 	
 	// method to initialise login
-	public void createLoginSession(String email, String name, String event_name, String prn, String branch, String role, String year)
+	public void createLoginSession(String email, String name, String event_name, int event_id)
 	{
 		editor.putBoolean(Constants.IS_LOGIN, true);
 		editor.putString(Constants.EVENT_NAME, event_name);
 		editor.putString(Constants.FULL_NAME, name);
 		editor.putString(Constants.EMAIL, email);
-		editor.putString(Constants.LOGIN_PRN, prn);
-		editor.putString(Constants.LOGIN_BRANCH, branch);
-		editor.putString(Constants.LOGIN_YEAR, year);
-		editor.putString(Constants.LOGIN_ROLE, role);
+		editor.putInt(EVENT_ID,event_id);
+//		editor.putString(Constants.LOGIN_PRN, prn);
+//		editor.putString(Constants.LOGIN_BRANCH, branch);
+//		editor.putString(Constants.LOGIN_YEAR, year);
+//		editor.putString(Constants.LOGIN_ROLE, role);
 		editor.apply();
 		
 		
-		Log.v("sp name", sharedPreferences.getString(Constants.FULL_NAME, "full_name"));
-		Log.v("sp name", sharedPreferences.getString(Constants.EMAIL, "email"));
-		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_PRN, "prn"));
-		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_BRANCH, "branch"));
-		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_YEAR, "year"));
-		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_ROLE, "role"));
+//		Log.v("sp name", sharedPreferences.getString(Constants.FULL_NAME, "full_name"));
+//		Log.v("sp name", sharedPreferences.getString(Constants.EMAIL, "email"));
+//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_PRN, "prn"));
+//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_BRANCH, "branch"));
+//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_YEAR, "year"));
+//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_ROLE, "role"));
 		
 	}
 	
@@ -71,6 +73,12 @@ public class SessionManager
 	{
 		return sharedPreferences.getString(FULL_NAME, "Android Studio");
 	}
+
+	public int getEventId()
+	{
+		return sharedPreferences.getInt(EVENT_ID, 1);
+	}
+
 	
 	// method to logout user
 	public void logoutUser()

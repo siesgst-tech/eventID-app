@@ -36,7 +36,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	public void onBindViewHolder(EntriesViewHolder holder, int position)
 	{
 		holder.name.setText(entriesModelList.get(position).getName());
-		holder.prn.setText(entriesModelList.get(position).getPrn());
+		holder.event_status.setText(entriesModelList.get(position).getEvent_status());
 	}
 	
 	@Override
@@ -50,13 +50,13 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	
 	class EntriesViewHolder extends RecyclerView.ViewHolder
 	{
-		private TextView name, prn;
+		private TextView name, event_status;
 		
 		public EntriesViewHolder(View itemView)
 		{
 			super(itemView);
 			name = (TextView) itemView.findViewById(R.id.entry_name);
-			prn = (TextView) itemView.findViewById(R.id.entry_prn);
+			event_status = (TextView) itemView.findViewById(R.id.event_status);
 		}
 	}
 }
