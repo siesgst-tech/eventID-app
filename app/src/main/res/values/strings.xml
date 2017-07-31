@@ -21,5 +21,8 @@
 	
 	<!--font awesome icons-->
 	<string name = "fa_inr" >&#xf156;</string >
+
+
+    <string name="LOCAL_URL">http://192.168.43.220/</string>
 	
 </resources >

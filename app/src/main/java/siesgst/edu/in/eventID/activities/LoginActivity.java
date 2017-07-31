@@ -34,7 +34,8 @@ public class LoginActivity extends AppCompatActivity
 	Button login, submit_forgot;
 	TextView forgot;
 	String email_entered, password_entered, first_name, last_name;
-	String id, name, prn, branch, year, role;
+	String name, prn, branch, year, role;
+	int id,event_id;
 	RelativeLayout login_layout, forgot_layout;
 	SessionManager sessionManager;
 	ProgressBar progressBar;
@@ -83,8 +84,8 @@ public class LoginActivity extends AppCompatActivity
 					{
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
-						String url = "http://192.168.43.221/api/login?email=" + email_entered + "&password=" + password_entered;
-						
+						String url = getResources().getString(R.string.LOCAL_URL)+"api/eventhead/login?email=" + email_entered + "&password=" + password_entered;
+						Log.v("url",url);
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
 							@Override
@@ -99,14 +100,15 @@ public class LoginActivity extends AppCompatActivity
 									try
 									{
 										JSONObject root = new JSONObject(response);
-										JSONObject content = root.optJSONObject("message");
-										id = content.optString("id");
+										JSONObject content = root.optJSONObject("response");
+										id = content.optInt("id");
 										name = content.optString("name");
 										email_entered = content.optString("email");
-										prn = content.optString("prn");
-										branch = content.optString("branch");
-										year = content.optString("year");
-										role = content.optString("role");
+//										prn = content.optString("prn");
+//										branch = content.optString("branch");
+//										year = content.optString("year");
+//										role = content.optString("role");
+										event_id = content.optInt("event_id");
 									}
 									catch (JSONException e)
 									{
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity
 									
 									first_name = email_entered.substring(0, email_entered.indexOf("."));
 									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
-									sessionManager.createLoginSession(email_entered, name, "Maze bot", prn, branch, role, year);
+									sessionManager.createLoginSession(email_entered, name, "Maze bot",event_id);
 									Log.v(TAG, "email: " + email_entered);
 									Log.v(TAG, "password: " + password_entered);
 									progressBar.setVisibility(View.INVISIBLE);
