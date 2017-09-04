@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity
 					{
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
-						String url = getResources().getString(R.string.LOCAL_URL) + "api/login?email=" + email_entered + "&password=" + password_entered;
+						String url = getResources().getString(R.string.LIVE_URL) + "login?email=" + email_entered + "&password=" + password_entered;
 						Log.v("url", url);
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
@@ -92,15 +92,12 @@ public class LoginActivity extends AppCompatActivity
 									try
 									{
 										JSONObject root = new JSONObject(response);
-										JSONObject content = root.optJSONObject("message");
+										JSONObject content = root.optJSONObject("response");
 										id = content.optInt("id");
 										name = content.optString("name");
 										email_entered = content.optString("email");
-//										prn = content.optString("prn");
-//										branch = content.optString("branch");
-//										year = content.optString("year");
-//										role = content.optString("role");
 										event_id = content.optInt("event_id");
+										Log.v("details", id + " " + name + "  " + email_entered + "  " + String.valueOf(event_id));
 									}
 									catch (JSONException e)
 									{

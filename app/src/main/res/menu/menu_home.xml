@@ -3,16 +3,16 @@
       xmlns:tools = "http://schemas.android.com/tools"
       tools:context = "siesgst.edu.in.eventID.activities.HomeActivity" >
 	
-	<item
-	 android:id = "@+id/action_messages"
-	 android:orderInCategory = "100"
-	 android:title = "Messages"
-	 app:showAsAction = "never" />
+	<!--<item-->
+	<!--android:id = "@+id/action_messages"-->
+	<!--android:orderInCategory = "100"-->
+	<!--android:title = "Messages"-->
+	<!--app:showAsAction = "never" />-->
 	
-    <item
-     android:id = "@+id/action_logout"
-     android:orderInCategory = "300"
-     android:title = "Logout"
-     app:showAsAction = "never" />
+	<item
+	 android:id = "@+id/action_logout"
+	 android:orderInCategory = "300"
+	 android:title = "Logout"
+	 app:showAsAction = "never" />
           
 </menu >

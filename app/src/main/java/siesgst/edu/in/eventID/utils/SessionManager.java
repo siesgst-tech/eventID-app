@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 
 import siesgst.edu.in.eventID.activities.LoginActivity;
 
-import static siesgst.edu.in.eventID.utils.Constants.EVENT_ID;
 import static siesgst.edu.in.eventID.utils.Constants.EVENT_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.FULL_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.IS_LOGIN;
@@ -22,8 +21,6 @@ public class SessionManager
 	public static final String PREF_NAME = "EVENT_ID";
 	public static final int PRIVATE_MODE = 0;
 	public static final String LOG_TAG = SessionManager.class.getSimpleName();
-	// defining keys
-	
 	
 	Context context;
 	
@@ -41,40 +38,12 @@ public class SessionManager
 	// method to initialise login
 	public void createLoginSession(String email, String name, String event_name, int event_id)
 	{
-		editor.putBoolean(Constants.IS_LOGIN, true);
-		editor.putString(Constants.EVENT_NAME, event_name);
-		editor.putString(Constants.FULL_NAME, name);
+		editor.putBoolean(IS_LOGIN, true);
+		editor.putString(EVENT_NAME, event_name);
+		editor.putString(FULL_NAME, name);
 		editor.putString(Constants.EMAIL, email);
-		editor.putInt(EVENT_ID, event_id);
-//		editor.putString(Constants.LOGIN_PRN, prn);
-//		editor.putString(Constants.LOGIN_BRANCH, branch);
-//		editor.putString(Constants.LOGIN_YEAR, year);
-//		editor.putString(Constants.LOGIN_ROLE, role);
+		editor.putInt(Constants.EVENT_ID, event_id);
 		editor.apply();
-
-
-//		Log.v("sp name", sharedPreferences.getString(Constants.FULL_NAME, "full_name"));
-//		Log.v("sp name", sharedPreferences.getString(Constants.EMAIL, "email"));
-//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_PRN, "prn"));
-//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_BRANCH, "branch"));
-//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_YEAR, "year"));
-//		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_ROLE, "role"));
-		
-	}
-	
-	public String getEmail()
-	{
-		return sharedPreferences.getString(Constants.EMAIL, "android.studio@android.com");
-	}
-	
-	public String getFullName()
-	{
-		return sharedPreferences.getString(FULL_NAME, "Android Studio");
-	}
-	
-	public int getEventId()
-	{
-		return sharedPreferences.getInt(EVENT_ID, 1);
 	}
 	
 	
@@ -96,13 +65,6 @@ public class SessionManager
 		
 	}
 	
-	// getter method for getting event_name
-	public String getEventName()
-	{
-		return sharedPreferences.getString(EVENT_NAME, "event_name_else");
-	}
-	
-	
 	public boolean checkNet()
 	{
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -112,10 +74,28 @@ public class SessionManager
 		return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 	}
 	
-	// getter method to check if the user is logged in.
+	public String getEmail()
+	{
+		return sharedPreferences.getString(Constants.EMAIL, "android.studio@android.com");
+	}
+	
+	public String getFullName()
+	{
+		return sharedPreferences.getString(FULL_NAME, "Android Studio");
+	}
+	
+	public int getEventId()
+	{
+		return sharedPreferences.getInt(Constants.EVENT_ID, 1);
+	}
+	
+	public String getEventName()
+	{
+		return sharedPreferences.getString(EVENT_NAME, "event_name_else");
+	}
+	
 	public boolean isLoggedIn()
 	{
 		return sharedPreferences.getBoolean(IS_LOGIN, false);
 	}
-	
 }

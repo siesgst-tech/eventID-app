@@ -33,8 +33,6 @@
          android:label = "@string/title_activity_home"
          android:theme = "@style/AppTheme.NoActionBar" >
         </activity >
-        <activity android:name = "siesgst.edu.in.eventID.activities.MessagesActivity" >
-        </activity >
     </application >
 
 </manifest >

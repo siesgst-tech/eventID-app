@@ -1,7 +1,6 @@
 package siesgst.edu.in.eventID.activities;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -18,13 +17,13 @@ import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.adapters.HomeTabLayoutAdapter;
 import siesgst.edu.in.eventID.fragments.EntriesFragment;
 import siesgst.edu.in.eventID.fragments.InterestedFragment;
+import siesgst.edu.in.eventID.fragments.MessagesFragment;
 import siesgst.edu.in.eventID.utils.SessionManager;
 
 public class HomeActivity extends AppCompatActivity
 {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 	SessionManager sessionManager;
-	Fragment entriesFragment = new EntriesFragment();
 	
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -49,9 +48,12 @@ public class HomeActivity extends AppCompatActivity
 	private void setUpViewPager(ViewPager viewPager)
 	{
 		HomeTabLayoutAdapter adapter = new HomeTabLayoutAdapter(getSupportFragmentManager());
+		Fragment entriesFragment = new EntriesFragment();
 		adapter.addFrag(entriesFragment, "Entries");
 		Fragment interestedFragment = new InterestedFragment();
 		adapter.addFrag(interestedFragment, "Interested");
+		Fragment messagesFragment = new MessagesFragment();
+		adapter.addFrag(messagesFragment, "Messages");
 		viewPager.setAdapter(adapter);
 	}
 	
@@ -66,12 +68,8 @@ public class HomeActivity extends AppCompatActivity
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		int id = item.getItemId();
-		if (id == R.id.action_messages)
-		{
-			startActivity(new Intent(HomeActivity.this, MessagesActivity.class));
-			return true;
-		}
-		else if (id == R.id.action_logout)
+		
+		if (id == R.id.action_logout)
 		{
 			new AlertDialog.Builder(HomeActivity.this)
 					.setMessage("Do you want to Log out ?")
