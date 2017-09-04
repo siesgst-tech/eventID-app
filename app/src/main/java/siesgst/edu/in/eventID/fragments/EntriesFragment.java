@@ -1,6 +1,5 @@
 package siesgst.edu.in.eventID.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,7 +36,7 @@ import siesgst.edu.in.eventID.utils.SessionManager;
 public class EntriesFragment extends Fragment
 {
 	private static final String LOG_TAG = EntriesFragment.class.getSimpleName();
-	List<EntriesModel> entriesModelList;
+	List<EntriesModel> entriesModelList = new ArrayList<EntriesModel>();
 	RecyclerView recyclerView;
 	int event_id,id,user_id,cost;
 	String name,event_status;
@@ -51,7 +50,8 @@ public class EntriesFragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_entries, container, false);
 		session = new SessionManager(getActivity());
 		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
-		getEntries();
+		init();
+//		getEntries();
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 		return view;
@@ -60,16 +60,17 @@ public class EntriesFragment extends Fragment
 	
 	private void init()
 	{
-//		entriesModelList.add(new EntriesModel("Rohit Ramaswamy", "115A1018"));
-//		entriesModelList.add(new EntriesModel("Omkar Prabhu", "115A1077"));
-//		entriesModelList.add(new EntriesModel("Aditya Nair", "115A1067"));
-//		entriesModelList.add(new EntriesModel("Vinay Ambre", "115A1031"));
-//		entriesModelList.add(new EntriesModel("Aditya Kulkarni", "115A1061"));
-//		entriesModelList.add(new EntriesModel("Shivshankar Ravi", "115A1019"));
-//		entriesModelList.add(new EntriesModel("Siddhesh Shinde", "115A1091"));
-//		entriesModelList.add(new EntriesModel("Pradyumna Bapat", "115A1038"));
-//		entriesModelList.add(new EntriesModel("Abhinandan Gupta", "115A1049"));
-//		entriesModelList.add(new EntriesModel("Vipul Singh Raghuvanshi", "115A1099"));
+		entriesModelList.add(new EntriesModel("Rohit Ramaswamy", "115A1018",1));
+		entriesModelList.add(new EntriesModel("Omkar Prabhu", "115A1077",1));
+		entriesModelList.add(new EntriesModel("Aditya Nair", "115A1067",2));
+		entriesModelList.add(new EntriesModel("Vinay Ambre", "115A1031",2));
+		entriesModelList.add(new EntriesModel("Aditya Kulkarni", "115A1061",1));
+		entriesModelList.add(new EntriesModel("Shivshankar Ravi", "115A1019",1));
+		entriesModelList.add(new EntriesModel("Siddhesh Shinde", "115A1091",2));
+		entriesModelList.add(new EntriesModel("Pradyumna Bapat", "115A1038",1));
+		entriesModelList.add(new EntriesModel("Abhinandan Gupta", "115A1049",2));
+		entriesModelList.add(new EntriesModel("Vipul Singh Raghuvanshi", "115A1099",1));
+		settingAdapter();
 	}
 
 	private void getEntries() {
@@ -77,7 +78,7 @@ public class EntriesFragment extends Fragment
 		//Volley
 		final RequestQueue queue = Volley.newRequestQueue(getActivity());
 		//Volley JsonObjectRequest
-		String jsonUrl = "http://192.168.43.220/api/event/"+session.getEventId()+"/entries";
+		String jsonUrl = getString(R.string.LOCAL_URL)+"/api/event/"+session.getEventId()+"/entries";
 		Log.v("eventurl",jsonUrl);
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest
 				(Request.Method.GET, jsonUrl, null, new Response.Listener<JSONObject>() {
@@ -120,6 +121,6 @@ public class EntriesFragment extends Fragment
 	}
 
 	public void settingAdapter(){
-		recyclerView.setAdapter(new EntriesAdapter(entriesModelList));
+		recyclerView.setAdapter(new EntriesAdapter(entriesModelList,1,getActivity()));
 	}
 }

@@ -11,9 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -31,12 +29,11 @@ public class LoginActivity extends AppCompatActivity
 {
 	private static final String TAG = LoginActivity.class.getSimpleName();
 	EditText email, password;
-	Button login, submit_forgot;
-	TextView forgot;
+	Button login;
 	String email_entered, password_entered, first_name, last_name;
 	String name, prn, branch, year, role;
-	int id,event_id;
-	RelativeLayout login_layout, forgot_layout;
+	int id, event_id;
+	RelativeLayout login_layout;
 	SessionManager sessionManager;
 	ProgressBar progressBar;
 	private RequestQueue queue;
@@ -51,10 +48,7 @@ public class LoginActivity extends AppCompatActivity
 		email = (EditText) findViewById(R.id.email);
 		password = (EditText) findViewById(R.id.password);
 		login = (Button) findViewById(R.id.login_btn);
-		forgot = (TextView) findViewById(R.id.forgot_textView);
 		login_layout = (RelativeLayout) findViewById(R.id.login_layout);
-		forgot_layout = (RelativeLayout) findViewById(R.id.forgot_layout);
-		submit_forgot = (Button) findViewById(R.id.submit_forgot);
 		progressBar = (ProgressBar) findViewById(R.id.login_progress);
 		final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.sike);
 		queue = Volley.newRequestQueue(this);
@@ -84,8 +78,8 @@ public class LoginActivity extends AppCompatActivity
 					{
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
-						String url = getResources().getString(R.string.LOCAL_URL)+"api/eventhead/login?email=" + email_entered + "&password=" + password_entered;
-						Log.v("url",url);
+						String url = getResources().getString(R.string.LOCAL_URL) + "api/login?email=" + email_entered + "&password=" + password_entered;
+						Log.v("url", url);
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
 							@Override
@@ -94,13 +88,11 @@ public class LoginActivity extends AppCompatActivity
 								Log.v(TAG + "response", response);
 								if (response.contains("success"))
 								{
-									
 									// parsing the response
-									
 									try
 									{
 										JSONObject root = new JSONObject(response);
-										JSONObject content = root.optJSONObject("response");
+										JSONObject content = root.optJSONObject("message");
 										id = content.optInt("id");
 										name = content.optString("name");
 										email_entered = content.optString("email");
@@ -117,7 +109,7 @@ public class LoginActivity extends AppCompatActivity
 									
 									first_name = email_entered.substring(0, email_entered.indexOf("."));
 									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
-									sessionManager.createLoginSession(email_entered, name, "Maze bot",event_id);
+									sessionManager.createLoginSession(email_entered, name, "Maze bot", event_id);
 									Log.v(TAG, "email: " + email_entered);
 									Log.v(TAG, "password: " + password_entered);
 									progressBar.setVisibility(View.INVISIBLE);
@@ -150,27 +142,7 @@ public class LoginActivity extends AppCompatActivity
 								Snackbar.make(findViewById(R.id.activity_login), "Please check your credentials", Snackbar.LENGTH_SHORT).show();
 								Log.v(TAG, error.toString());
 							}
-						})
-						{
-							@Override
-							protected Response<String> parseNetworkResponse(NetworkResponse response)
-							{
-								String gg = response.headers.get("Authorization");
-								Log.v(TAG + "header", "   " + gg);
-								sessionManager.setAuth_token(gg);
-								Log.v(TAG + "tokenshared", "   " + sessionManager.getToken());
-								if ((sessionManager.getToken().equals("null")))
-								{
-//									Toast.makeText(LoginActivity.this,"Some error",Toast.LENGTH_SHORT).show();
-									Log.v(TAG, "some error");
-								}
-								else
-								{
-									Log.v(TAG, "correct password");
-								}
-								return super.parseNetworkResponse(response);
-							}
-						};
+						});
 						
 						queue.add(stringRequest);
 						
@@ -188,36 +160,11 @@ public class LoginActivity extends AppCompatActivity
 				
 			}
 		});
-		forgot.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				login_layout.setVisibility(View.GONE);
-				forgot_layout.setVisibility(View.VISIBLE);
-			}
-		});
-		submit_forgot.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				Snackbar.make(findViewById(R.id.activity_login), "Please check your inbox as well as your spam", Snackbar.LENGTH_SHORT).show();
-			}
-		});
 	}
 	
 	@Override
 	public void onBackPressed()
 	{
-		if (forgot_layout.getVisibility() == View.VISIBLE)
-		{
-			forgot_layout.setVisibility(View.GONE);
-			login_layout.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			super.onBackPressed();
-		}
+		super.onBackPressed();
 	}
 }

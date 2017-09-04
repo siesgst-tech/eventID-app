@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import siesgst.edu.in.eventID.activities.LoginActivity;
 
@@ -13,7 +12,6 @@ import static siesgst.edu.in.eventID.utils.Constants.EVENT_ID;
 import static siesgst.edu.in.eventID.utils.Constants.EVENT_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.FULL_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.IS_LOGIN;
-import static siesgst.edu.in.eventID.utils.Constants.auth_token;
 
 /**
  * Created by rohitramaswamy on 23/07/17.
@@ -119,18 +117,5 @@ public class SessionManager
 	{
 		return sharedPreferences.getBoolean(IS_LOGIN, false);
 	}
-	
-	
-	public String getToken()
-	{
-		return sharedPreferences.getString(auth_token, "null");
-	}
-	
-	public void setAuth_token(String auth_token1)
-	{
-		editor.putString(Constants.auth_token, auth_token1);
-		editor.apply();
-	}
-	
 	
 }

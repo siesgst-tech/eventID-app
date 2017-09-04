@@ -39,7 +39,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 	public void onBindViewHolder(ViewHolder holder, int position)
 	{
 		holder.event_name.setText(messagesModels.get(position).getEvent_name());
-		holder.title.setText(messagesModels.get(position).getTitle());
 		holder.content.setText(messagesModels.get(position).getDescription());
 	}
 	
@@ -63,7 +62,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 		{
 			super(itemView);
 			event_name = (TextView) itemView.findViewById(R.id.message_event_name);
-			title = (TextView) itemView.findViewById(R.id.message_title);
 			content = (TextView) itemView.findViewById(R.id.message_content);
 		}
 	}

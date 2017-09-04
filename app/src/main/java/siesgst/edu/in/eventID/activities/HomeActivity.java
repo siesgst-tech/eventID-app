@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.adapters.HomeTabLayoutAdapter;
 import siesgst.edu.in.eventID.fragments.EntriesFragment;
-import siesgst.edu.in.eventID.fragments.EventsFragment;
+import siesgst.edu.in.eventID.fragments.InterestedFragment;
 import siesgst.edu.in.eventID.utils.SessionManager;
 
 public class HomeActivity extends AppCompatActivity
@@ -50,8 +50,8 @@ public class HomeActivity extends AppCompatActivity
 	{
 		HomeTabLayoutAdapter adapter = new HomeTabLayoutAdapter(getSupportFragmentManager());
 		adapter.addFrag(entriesFragment, "Entries");
-		Fragment eventFragment = new EventsFragment();
-		adapter.addFrag(eventFragment, "Events");
+		Fragment interestedFragment = new InterestedFragment();
+		adapter.addFrag(interestedFragment, "Interested");
 		viewPager.setAdapter(adapter);
 	}
 	
