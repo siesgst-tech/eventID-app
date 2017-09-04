@@ -9,6 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +40,8 @@ public class InterestedFragment extends Fragment
 	RecyclerView recyclerView;
 	SessionManager session;
 	String name, prn;
+	private StringRequest stringRequest;
+	private RequestQueue requestQueue;
 	
 	@Nullable
 	@Override
@@ -36,21 +50,62 @@ public class InterestedFragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_interested, container, false);
 		session = new SessionManager(getActivity());
 		recyclerView = (RecyclerView) view.findViewById(R.id.interested_recycler);
-		init();
-		settingAdapter();
+		getInterestedList();
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		return view;
-	}
-	
-	
-	public void init()
-	{
-		entriesModels.add(new EntriesModel("I am interested", "my prn"));
-		entriesModels.add(new EntriesModel("Aee merko bhi le na", "mera bhi prn lele"));
 	}
 	
 	public void settingAdapter()
 	{
 		recyclerView.setAdapter(new EntriesAdapter(entriesModels, 2, getActivity()));
+	}
+	
+	public void getInterestedList()
+	{
+		String url = getString(R.string.LIVE_URL)+session.getEventId()+"/interested";
+		stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
+		{
+			@Override
+			public void onResponse(String response)
+			{
+				try
+				{
+					JSONObject root = new JSONObject(response);
+					String status = root.optString("status");
+					JSONArray responses = root.optJSONArray("response");
+					for(int i=0;i<responses.length();i++)
+					{
+						JSONObject responseObject = responses.optJSONObject(i);
+						String name = responseObject.optString("name");
+						String uid = responseObject.optString("uid");
+						String id = responseObject.optString("id");
+						String event_id = responseObject.optString("event_id");
+						String email = responseObject.optString("email");
+						String contact = responseObject.optString("contact");
+						entriesModels.add(new EntriesModel(name,uid,id,email,contact));
+					}
+					settingAdapter();
+					
+				}
+				catch (JSONException e)
+				{
+					e.printStackTrace();
+				}
+				
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error)
+			{
+				
+			}
+		});
+		
+		stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+				10000,
+				DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+				DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+		requestQueue = Volley.newRequestQueue(getActivity());
+		requestQueue.add(stringRequest);
 	}
 }

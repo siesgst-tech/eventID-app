@@ -6,11 +6,14 @@ package siesgst.edu.in.eventID.model;
 
 public class EntriesModel
 {
-	private String name;
-	private String event_status;
+	private String name, uid, id, email, contact;
+	
+	private String receipt_number, paid;
+	
+	private String cost;
+	
 	private int status;
 	private String prn;
-	private int id, user_id, cost;
 	
 	public EntriesModel(String name, String prn, int status)
 	{
@@ -19,21 +22,96 @@ public class EntriesModel
 		this.prn = prn;
 	}
 	
-	public EntriesModel(String name, String prn)
+	public EntriesModel(String name, String uid, String id, String receipt_number, String email, String contact, String paid)
 	{
 		this.name = name;
-		this.prn = prn;
+		this.uid = uid;
+		this.id = id;
+		this.email = email;
+		this.contact = contact;
+		this.receipt_number = receipt_number;
+		this.paid = paid;
 	}
 	
-	public EntriesModel(String name, String event_status, int id, int user_id, int cost)
+	public EntriesModel(String name, String uid, String id, String email, String contact)
 	{
-		
 		this.name = name;
-		this.event_status = event_status;
+		this.uid = uid;
 		this.id = id;
-		this.user_id = user_id;
-		this.cost = cost;
+		this.email = email;
+		this.contact = contact;
 	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public String getUid()
+	{
+		return uid;
+	}
+	
+	public void setUid(String uid)
+	{
+		this.uid = uid;
+	}
+	
+	public String getId()
+	{
+		return id;
+	}
+	
+	public void setId(String id)
+	{
+		this.id = id;
+	}
+	
+	public String getEmail()
+	{
+		return email;
+	}
+	
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+	
+	public String getContact()
+	{
+		return contact;
+	}
+	
+	public void setContact(String contact)
+	{
+		this.contact = contact;
+	}
+	
+	public String getReceipt_number()
+	{
+		return receipt_number;
+	}
+	
+	public void setReceipt_number(String receipt_number)
+	{
+		this.receipt_number = receipt_number;
+	}
+	
+	public String getPaid()
+	{
+		return paid;
+	}
+	
+	public void setPaid(String paid)
+	{
+		this.paid = paid;
+	}
+	
 	
 	public int getStatus()
 	{
@@ -47,7 +125,6 @@ public class EntriesModel
 	
 	public String getPrn()
 	{
-		
 		return prn;
 	}
 	
@@ -56,52 +133,12 @@ public class EntriesModel
 		this.prn = prn;
 	}
 	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	
-	public String getEvent_status()
-	{
-		return event_status;
-	}
-	
-	public void setEvent_status(String event_status)
-	{
-		this.event_status = event_status;
-	}
-	
-	public int getId()
-	{
-		return id;
-	}
-	
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-	
-	public int getUser_id()
-	{
-		return user_id;
-	}
-	
-	public void setUser_id(int user_id)
-	{
-		this.user_id = user_id;
-	}
-	
-	public int getCost()
+	public String getCost()
 	{
 		return cost;
 	}
 	
-	public void setCost(int cost)
+	public void setCost(String cost)
 	{
 		this.cost = cost;
 	}

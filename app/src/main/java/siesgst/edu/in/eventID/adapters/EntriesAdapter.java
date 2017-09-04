@@ -1,8 +1,16 @@
 package siesgst.edu.in.eventID.adapters;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import siesgst.edu.in.eventID.R;
+import siesgst.edu.in.eventID.activities.RequestPermissionActivity;
 import siesgst.edu.in.eventID.model.EntriesModel;
 
 import static android.view.View.GONE;
@@ -26,7 +35,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	
 	// type: 1 = entries; 2 = interested
 	// status: 1 = played; 2 = not played
-	
+	public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1232;
 	List<EntriesModel> entriesModelList = new ArrayList<EntriesModel>();
 	int type;
 	Context context;
@@ -63,14 +72,14 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		{
 			holder.entry_tick.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_fontawesome)));
 			holder.entry_name.setText(entriesModelList.get(position).getName());
-			holder.entry_prn.setText(entriesModelList.get(position).getPrn());
-			if (entriesModelList.get(position).getStatus() == 1)
+			holder.entry_prn.setText(entriesModelList.get(position).getUid());
+			if (entriesModelList.get(position).getPaid().equalsIgnoreCase("1"))
 			{
 				// played
 				holder.entry_check.setVisibility(GONE);
 				holder.entry_tick.setVisibility(View.VISIBLE);
 			}
-			else if (entriesModelList.get(position).getStatus() == 2)
+			else if (entriesModelList.get(position).getPaid().equalsIgnoreCase("2"))
 			{
 				// not played
 				holder.entry_tick.setVisibility(GONE);
@@ -80,7 +89,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		else
 		{
 			holder.interested_name.setText(entriesModelList.get(position).getName());
-			holder.interested_prn.setText(entriesModelList.get(position).getPrn());
+			holder.interested_prn.setText(entriesModelList.get(position).getContact());
 			holder.interested_phone.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_fontawesome)));
 		}
 	}
@@ -103,20 +112,61 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		// interested
 		private TextView interested_name, interested_prn, interested_phone;
 		
-		
-		public EntriesViewHolder(View itemView)
+		EntriesViewHolder(View itemView)
 		{
 			super(itemView);
-			// entries
-			entry_name = (TextView) itemView.findViewById(R.id.entry_name);
-			entry_prn = (TextView) itemView.findViewById(R.id.event_prn);
-			entry_tick = (TextView) itemView.findViewById(R.id.entry_tick);
-			entry_check = (CheckBox) itemView.findViewById(R.id.entry_check);
-			
-			// interested
-			interested_name = (TextView) itemView.findViewById(R.id.interested_name);
-			interested_prn = (TextView) itemView.findViewById(R.id.interested_prn);
-			interested_phone = (TextView) itemView.findViewById(R.id.interested_phone);
+			if(type==1)
+			{
+				// entries
+				entry_name = (TextView) itemView.findViewById(R.id.entry_name);
+				entry_prn = (TextView) itemView.findViewById(R.id.event_prn);
+				entry_tick = (TextView) itemView.findViewById(R.id.entry_tick);
+				entry_check = (CheckBox) itemView.findViewById(R.id.entry_check);
+			}
+			else if(type==2)
+			{
+				// interested
+				interested_name = (TextView) itemView.findViewById(R.id.interested_name);
+				interested_prn = (TextView) itemView.findViewById(R.id.interested_prn);
+				interested_phone = (TextView) itemView.findViewById(R.id.interested_phone);
+				interested_phone.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view)
+					{
+						if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE)
+								!= PackageManager.PERMISSION_GRANTED)
+						{
+							Log.v("perm", "[if]->we do not have permission");
+							
+							// Should we show an explanation?
+							if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
+									Manifest.permission.CALL_PHONE))
+							{
+								// we need to show an explanation
+								Log.v("perm", "[if[if]]->taking user to request permission activity");
+								context.startActivity(new Intent(context, RequestPermissionActivity.class));
+							}
+							else
+							{
+								Log.v("perm", "[if[else]]-> asking permission");
+								ActivityCompat.requestPermissions((Activity) context,
+										new String[]{Manifest.permission.CALL_PHONE},
+										MY_PERMISSIONS_REQUEST_CALL_PHONE);
+							}
+							
+						}
+						else
+						{
+							Log.v("perm", "[else]->we have permission");
+							String tel = "tel:" + entriesModelList.get(getAdapterPosition()).getContact();
+							Intent intent = new Intent();
+							intent.setAction(Intent.ACTION_CALL);
+							intent.setData(Uri.parse(tel));
+							context.startActivity(intent);
+						}
+					}
+				});
+			}
 		}
 	}
 }
