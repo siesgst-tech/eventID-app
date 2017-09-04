@@ -56,6 +56,8 @@ public class HomeActivity extends AppCompatActivity
 		adapter.addFrag(messagesFragment, "Messages");
 		viewPager.setAdapter(adapter);
 	}
+
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
