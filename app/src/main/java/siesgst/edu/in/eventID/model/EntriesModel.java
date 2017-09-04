@@ -44,7 +44,7 @@ public class EntriesModel
 	{
 		this.status = status;
 	}
-
+	
 	public String getPrn()
 	{
 		

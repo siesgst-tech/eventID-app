@@ -27,13 +27,13 @@ public class InterestedFragment extends Fragment
 	List<EntriesModel> entriesModels = new ArrayList<EntriesModel>();
 	RecyclerView recyclerView;
 	SessionManager session;
-	String name,prn;
+	String name, prn;
 	
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.fragment_interested,container,false);
+		View view = inflater.inflate(R.layout.fragment_interested, container, false);
 		session = new SessionManager(getActivity());
 		recyclerView = (RecyclerView) view.findViewById(R.id.interested_recycler);
 		init();
@@ -45,12 +45,12 @@ public class InterestedFragment extends Fragment
 	
 	public void init()
 	{
-		entriesModels.add(new EntriesModel("I am interested","my prn"));
-		entriesModels.add(new EntriesModel("Aee merko bhi le na","mera bhi prn lele"));
+		entriesModels.add(new EntriesModel("I am interested", "my prn"));
+		entriesModels.add(new EntriesModel("Aee merko bhi le na", "mera bhi prn lele"));
 	}
 	
 	public void settingAdapter()
 	{
-		recyclerView.setAdapter(new EntriesAdapter(entriesModels,2,getActivity()));
+		recyclerView.setAdapter(new EntriesAdapter(entriesModels, 2, getActivity()));
 	}
 }

@@ -45,14 +45,14 @@ public class SessionManager
 		editor.putString(Constants.EVENT_NAME, event_name);
 		editor.putString(Constants.FULL_NAME, name);
 		editor.putString(Constants.EMAIL, email);
-		editor.putInt(EVENT_ID,event_id);
+		editor.putInt(EVENT_ID, event_id);
 //		editor.putString(Constants.LOGIN_PRN, prn);
 //		editor.putString(Constants.LOGIN_BRANCH, branch);
 //		editor.putString(Constants.LOGIN_YEAR, year);
 //		editor.putString(Constants.LOGIN_ROLE, role);
 		editor.apply();
-		
-		
+
+
 //		Log.v("sp name", sharedPreferences.getString(Constants.FULL_NAME, "full_name"));
 //		Log.v("sp name", sharedPreferences.getString(Constants.EMAIL, "email"));
 //		Log.v("sp name", sharedPreferences.getString(Constants.LOGIN_PRN, "prn"));
@@ -71,12 +71,12 @@ public class SessionManager
 	{
 		return sharedPreferences.getString(FULL_NAME, "Android Studio");
 	}
-
+	
 	public int getEventId()
 	{
 		return sharedPreferences.getInt(EVENT_ID, 1);
 	}
-
+	
 	
 	// method to logout user
 	public void logoutUser()
