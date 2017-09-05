@@ -5,9 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,22 +48,64 @@ public class InterestedFragment extends Fragment
 	String name, prn;
 	private StringRequest stringRequest;
 	private RequestQueue requestQueue;
-	
+	MaterialSearchView searchView;
+	EntriesAdapter entriesAdapter;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_interested, container, false);
 		session = new SessionManager(getActivity());
+//		setHasOptionsMenu(true);
+		searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+		if (searchView.isSearchOpen())
+		{
+			searchView.closeSearch();
+		}
+		searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+
+				entriesAdapter.filter(query);
+				searchView.clearFocus();
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				entriesAdapter.filter(newText);
+				return false;
+			}
+		});
+		searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+			@Override
+			public void onSearchViewShown() {
+
+			}
+
+			@Override
+			public void onSearchViewClosed() {
+
+			}
+		});
 		recyclerView = (RecyclerView) view.findViewById(R.id.interested_recycler);
 		getInterestedList();
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		return view;
 	}
-	
+
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
 	public void settingAdapter()
 	{
-		recyclerView.setAdapter(new EntriesAdapter(entriesModels, 2, getActivity()));
+		entriesAdapter=new EntriesAdapter(entriesModels, 2, getActivity());
+		recyclerView.setAdapter(entriesAdapter);
 	}
 	
 	public void getInterestedList()
@@ -107,5 +155,27 @@ public class InterestedFragment extends Fragment
 				DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 		requestQueue = Volley.newRequestQueue(getActivity());
 		requestQueue.add(stringRequest);
+	}
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.menu_fragments, menu);
+		MenuItem item = menu.findItem(R.id.action_search);
+		searchView.setMenuItem(item);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_search:
+				Log.d("EntriesFragment","action Search");
+
+				Toast.makeText(getActivity(), "search interested", Toast.LENGTH_SHORT).show();
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }

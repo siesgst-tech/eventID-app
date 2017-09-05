@@ -5,9 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,18 +46,58 @@ public class EntriesFragment extends Fragment
 	String event_id, id, uid, cost;
 	String name, event_status,receipt_no,email,contact,paid;
 	SessionManager session;
-	
+	MaterialSearchView searchView;
+	EntriesAdapter entriesAdapter;
+
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_entries, container, false);
 		session = new SessionManager(getActivity());
+		//setHasOptionsMenu(true);
+		searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+		if (searchView.isSearchOpen())
+		{
+			searchView.closeSearch();
+		}
+		Log.d("MaterialSearchView", "onCreateView");
+
+		searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener()
+		{
+			@Override
+			public boolean onQueryTextSubmit(String query)
+			{
+				entriesAdapter.filter(query);
+				searchView.clearFocus();
+
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText)
+			{
+				entriesAdapter.filter(newText);
+				Log.d("MaterialSearchView", "onQueryTextChange");
+				return false;
+			}
+		});
+
+
 		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
 		getEntries();
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		
 		return view;
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+		Log.d("MaterialSearchView", "onCreate");
+
 	}
 
 	private void getEntries()
@@ -109,6 +155,31 @@ public class EntriesFragment extends Fragment
 	
 	public void settingAdapter()
 	{
-		recyclerView.setAdapter(new EntriesAdapter(entriesModelList, 1, getActivity()));
+		entriesAdapter=new EntriesAdapter(entriesModelList, 1, getActivity());
+		recyclerView.setAdapter(entriesAdapter);
+	}
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		getActivity().getMenuInflater().inflate(R.menu.menu_fragments, menu);
+		MenuItem item = menu.findItem(R.id.action_search);
+		searchView.setMenuItem(item);
+		Log.d("MaterialSearchView", "onCreateOptionsMenu");
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("MaterialSearchView", "onOptionsItemSelected");
+
+		int id = item.getItemId();
+
+		switch (id)
+		{
+			case R.id.action_search:
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
-                xmlns:app = "http://schemas.android.com/apk/res-auto"
-                xmlns:tools = "http://schemas.android.com/tools"
-                android:id = "@+id/home_activity"
-                android:layout_width = "match_parent"
-                android:layout_height = "match_parent"
-                android:theme = "@style/AppTheme"
-                tools:context = "siesgst.edu.in.eventID.activities.HomeActivity" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
+    tools:context="siesgst.edu.in.eventID.activities.HomeActivity">
 
-	<include
-	 android:id = "@+id/app_main"
-	 layout = "@layout/toolbar" />
-	
-	<android.support.design.widget.TabLayout
-	 android:id = "@+id/home_tab_layout"
-	 android:layout_width = "match_parent"
-	 android:layout_height = "wrap_content"
-	 android:layout_below = "@id/app_main"
-	 android:background = "@color/colorPrimary"
-	 app:tabSelectedTextColor = "#ffffff"
-	 app:tabTextColor = "#bdbdbd"
-	 />
-	
+    <FrameLayout android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<include-->
+        <!--android:id="@+id/app_main"-->
+        <!--layout="@layout/toolbar" />-->
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/app_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:text="EventId"
+                android:textSize="18sp"
+                android:textColor="#ffffff"/>
+
+        </android.support.v7.widget.Toolbar>
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id = "@+id/search_view"
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content"
+            app:searchBackground="@color/colorPrimary"
+            android:textColor="#fff"
+            android:inputType="textNoSuggestions"
+            android:textColorHint="#fff"/>
+
+    </FrameLayout>
+
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/home_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_container"
+        android:background="@color/colorPrimary"
+        app:tabSelectedTextColor="#ffffff"
+        app:tabTextColor="#bdbdbd" />
+
+
     <android.support.v4.view.ViewPager
-     android:id = "@+id/view_pager"
-     android:layout_width = "match_parent"
-     android:layout_height = "match_parent"
-     android:layout_below = "@id/home_tab_layout" />
-	
-	
-    
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/home_tab_layout" />
 
-</RelativeLayout >
+
+</RelativeLayout>

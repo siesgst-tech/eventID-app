@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_activity);
+
 		sessionManager = new SessionManager(this);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.app_main);
 		setSupportActionBar(toolbar);
@@ -65,12 +66,12 @@ public class HomeActivity extends AppCompatActivity
 		getMenuInflater().inflate(R.menu.menu_home, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		int id = item.getItemId();
-		
+
 		if (id == R.id.action_logout)
 		{
 			new AlertDialog.Builder(HomeActivity.this)
@@ -86,7 +87,7 @@ public class HomeActivity extends AppCompatActivity
 					})
 					.setNegativeButton("No", null)
 					.show();
-			
+
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

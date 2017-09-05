@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.activities.RequestPermissionActivity;
@@ -37,12 +38,15 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	// status: 1 = played; 2 = not played
 	public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1232;
 	List<EntriesModel> entriesModelList = new ArrayList<EntriesModel>();
+	List<EntriesModel> entriesModelListCopy;
 	int type;
 	Context context;
 	
 	public EntriesAdapter(List<EntriesModel> entriesModelList, int type, Context context)
 	{
 		this.entriesModelList = entriesModelList;
+		entriesModelListCopy=new ArrayList<>();
+		entriesModelList.addAll(entriesModelList);
 		this.type = type;
 		this.context = context;
 	}
@@ -168,5 +172,49 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				});
 			}
 		}
+	}
+
+
+	public void filter(String query){
+
+			query = query.toLowerCase(Locale.getDefault());
+			entriesModelList.clear();
+			if (query.length() == 0)
+			{
+				entriesModelList.addAll(entriesModelListCopy);
+
+			}
+			else
+			{
+				for (int i = 0; i < entriesModelListCopy.size(); i++) {
+					if (type == 1){
+
+						Log.d("EntriesAdapter","entries search="+query);
+						//for entries
+						if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
+								entriesModelListCopy.get(i).getUid().toLowerCase(Locale.getDefault()).contains(query)) {
+							entriesModelList.add(entriesModelListCopy.get(i));
+						}
+					}
+					else{
+						//for interested
+						Log.d("EntriesAdapter","interested search="+query);
+
+						if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
+								entriesModelListCopy.get(i).getContact().toLowerCase(Locale.getDefault()).contains(query)) {
+							entriesModelList.add(entriesModelListCopy.get(i));
+						}
+
+					}
+				}
+			}
+
+
+
+
+			notifyDataSetChanged();
+
+
+
 	}
 }
