@@ -1,5 +1,9 @@
 package siesgst.edu.in.eventID.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,11 +31,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.adapters.EntriesAdapter;
+import siesgst.edu.in.eventID.database.DatabaseManager;
 import siesgst.edu.in.eventID.model.EntriesModel;
+import siesgst.edu.in.eventID.utils.Constants;
 import siesgst.edu.in.eventID.utils.SessionManager;
 
 /**
@@ -40,14 +48,17 @@ import siesgst.edu.in.eventID.utils.SessionManager;
 public class EntriesFragment extends Fragment
 {
 	private static final String LOG_TAG = EntriesFragment.class.getSimpleName();
-	List<EntriesModel> entriesModelList;
+	List<EntriesModel> entriesModelList = new ArrayList<>();
 	RecyclerView recyclerView;
 	String event_id, id, uid, cost;
 	String name, event_status,receipt_no,email,contact,status1;
 	SessionManager session;
 	MaterialSearchView searchView;
 	EntriesAdapter entriesAdapter;
-
+	DatabaseManager databaseManager;
+	ConnectivityManager connectivityManager;
+	NetworkInfo activeNetwork;
+	ProgressBar progressBar;
 
 	/*
 	
@@ -66,8 +77,19 @@ public class EntriesFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_entries, container, false);
+
 		session = new SessionManager(getActivity());
+		databaseManager = new DatabaseManager(getActivity());
+		progressBar = (ProgressBar)view.findViewById(R.id.entries_progress);
+
+		connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		activeNetwork = connectivityManager.getActiveNetworkInfo();
+
 		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		entriesAdapter=new EntriesAdapter(entriesModelList, 1, getActivity());
+		recyclerView.setAdapter(entriesAdapter);
+
 		//setHasOptionsMenu(true);
 		searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
 		if (searchView.isSearchOpen())
@@ -95,9 +117,14 @@ public class EntriesFragment extends Fragment
 			}
 		});
 		
-		getEntries();
+		//getEntries();
 //		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		
+
+		new getEntriesFromDb().execute();
+
+		if (connectivityManager.getActiveNetworkInfo() != null) {
+			getEntries();
+		}
 		return view;
 	}
 	
@@ -111,11 +138,13 @@ public class EntriesFragment extends Fragment
 	
 	private void getEntries()
 	{
-		entriesModelList = new ArrayList<EntriesModel>();
+		progressBar.setVisibility(View.VISIBLE);
+		//entriesModelList = new ArrayList<EntriesModel>();
 		//Volley
 		final RequestQueue queue = Volley.newRequestQueue(getActivity());
 		//Volley JsonObjectRequest
 		String jsonUrl = getString(R.string.LIVE_URL)+ session.getEventId() + "/entries";
+		Log.d("entriesUrl",jsonUrl);
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest
 				(Request.Method.GET, jsonUrl, null, new Response.Listener<JSONObject>()
 				{
@@ -137,9 +166,18 @@ public class EntriesFragment extends Fragment
 								email = messageObject.optString("email");
 								contact = messageObject.optString("contact");
 								status1 = messageObject.optString("status");
-								entriesModelList.add(new EntriesModel(name,uid,id,receipt_no,email,contact,status1));
+								//entriesModelList.add(new EntriesModel(name,uid,id,receipt_no,email,contact,status1));
+
+								HashMap<String, String> map = new HashMap<>();
+								map.put(Constants.ENTRIES_ID, id);
+								map.put(Constants.ENTRIES_USER_ID, uid);
+								map.put(Constants.ENTRIES_NAME, name);
+								map.put(Constants.ENTRIES_STATUS, status1);
+
+								databaseManager.insertEntries(map);
 							}
-							settingAdapter();
+							//settingAdapter();
+							new getEntriesFromDb().execute();
 						}
 						catch (Exception e)
 						{
@@ -167,6 +205,40 @@ public class EntriesFragment extends Fragment
 		entriesAdapter=new EntriesAdapter(entriesModelList, 1, getActivity());
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerView.setAdapter(entriesAdapter);
+	}
+
+	public class getEntriesFromDb extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			Log.d("EntriesFragment", "onPreExecute ");
+			super.onPreExecute();
+			progressBar.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			entriesModelList = databaseManager.getAllEntries();
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			Log.d("EntriesFragment", "onPostExecute entriesModels size=" + entriesModelList.size());
+			if (entriesModelList.size() == 0) {
+				//errorLayout.setVisibility(View.VISIBLE);
+				//errorText.setText("Messages from events you participate in\nwill appear here.");
+				//errorTextView.setText(R.string.fa_bell_o);
+			} else {
+				//errorLayout.setVisibility(View.GONE);
+				entriesAdapter = new EntriesAdapter(entriesModelList, 1, getActivity());
+				recyclerView.setAdapter(entriesAdapter);
+				entriesAdapter.notifyDataSetChanged();
+			}
+			progressBar.setVisibility(View.GONE);
+		}
 	}
 	
 	

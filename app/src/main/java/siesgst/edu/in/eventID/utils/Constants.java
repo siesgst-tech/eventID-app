@@ -21,7 +21,10 @@ public class Constants
 	public static final String ENTRIES_USER_ID = "user_id";
 	public static final String ENTRIES_EVENT_ID = "event_id";
 	public static final String ENTRIES_COST = "cost";
+	public static final String ENTRIES_NAME = "name";
+	public static final String ENTRIES_EMAIL = "email";
 	public static final String ENTRIES_STATUS = "status";
+	public static final String ENTRIES_CONTACT = "contact";
 
 	// interested
 	public static final String INTERESTED_ID = "id";

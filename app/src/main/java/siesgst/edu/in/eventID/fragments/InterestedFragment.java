@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -55,6 +56,7 @@ public class InterestedFragment extends Fragment {
     private RequestQueue requestQueue;
     ConnectivityManager connectivityManager;
     NetworkInfo activeNetwork;
+    ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -66,6 +68,7 @@ public class InterestedFragment extends Fragment {
         connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = connectivityManager.getActiveNetworkInfo();
 //		setHasOptionsMenu(true);
+        progressBar = (ProgressBar)view.findViewById(R.id.interested_progress);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.interested_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -98,6 +101,7 @@ public class InterestedFragment extends Fragment {
     }
 
     public void getInterestedList() {
+        progressBar.setVisibility(View.VISIBLE);
         String url = getString(R.string.LIVE_URL) + session.getEventId() + "/interested";
         stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -156,7 +160,7 @@ public class InterestedFragment extends Fragment {
         protected void onPreExecute() {
             Log.d("InterestedFragment", "onPreExecute ");
             super.onPreExecute();
-            //progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -180,7 +184,7 @@ public class InterestedFragment extends Fragment {
                 recyclerView.setAdapter(entriesAdapter);
                 entriesAdapter.notifyDataSetChanged();
             }
-            //progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 

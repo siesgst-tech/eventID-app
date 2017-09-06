@@ -24,10 +24,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     private static final String CREATE_ENTRIES_TABLE = "CREATE TABLE " + Constants.ENTRIES_TABLE_NAME + " ( " +
-            Constants.ENTRIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            Constants.ENTRIES_USER_ID + " VARCHAR DEFAULT NULL, " +
-            Constants.ENTRIES_EVENT_ID + " VARCHAR DEFAULT NULL, " +
-            Constants.ENTRIES_COST + " VARCHAR DEFAULT NULL, " +
+            Constants.ENTRIES_ID + " INTEGER , " +
+            Constants.ENTRIES_USER_ID + " VARCHAR PRIMARY KEY , " +
+            Constants.ENTRIES_NAME + " VARCHAR DEFAULT NULL, " +
             Constants.ENTRIES_STATUS + " VARCHAR DEFAULT NULL )";
 
 
@@ -92,6 +91,34 @@ public class DatabaseManager extends SQLiteOpenHelper {
         cursor.close();
     }
 
+    public void insertEntries(HashMap<String, String> map) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.ENTRIES_TABLE_NAME + " WHERE " + Constants.ENTRIES_USER_ID + " LIKE '" + map.get(Constants.ENTRIES_USER_ID) + "'", null);
+
+        int flag = 0;
+
+        if (cursor.getCount() > 0) {
+            flag = 1;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(Constants.ENTRIES_ID, map.get(Constants.ENTRIES_ID));
+        values.put(Constants.ENTRIES_USER_ID, map.get(Constants.ENTRIES_USER_ID));
+        //values.put(Constants.INTERESTED_EVENT_ID, map.get(Constants.INTERESTED_EVENT_ID));
+        values.put(Constants.ENTRIES_STATUS, map.get(Constants.ENTRIES_STATUS));
+        values.put(Constants.ENTRIES_NAME, map.get(Constants.ENTRIES_NAME));
+
+        if (flag == 0) {
+            db.insert(Constants.ENTRIES_TABLE_NAME, null, values);
+
+        } else {
+            db.update(Constants.ENTRIES_TABLE_NAME, values, Constants.ENTRIES_STATUS + " LIKE '" + map.get(Constants.ENTRIES_STATUS) + "'", null);
+        }
+
+        cursor.close();
+    }
+
     public ArrayList<EntriesModel> getAllInterested() {
 
         ArrayList<EntriesModel> messagesList = new ArrayList<>();
@@ -103,6 +130,26 @@ public class DatabaseManager extends SQLiteOpenHelper {
             EntriesModel notification_data = new EntriesModel();
             notification_data.setName(cursor.getString(cursor.getColumnIndex(Constants.INTERESTED_NAME)));
             notification_data.setContact(cursor.getString(cursor.getColumnIndex(Constants.INTERESTED_CONTACT)));
+            messagesList.add(notification_data);
+        }
+        cursor.close();
+        db.close();
+        return messagesList;
+    }
+
+    public ArrayList<EntriesModel> getAllEntries() {
+
+        ArrayList<EntriesModel> messagesList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(Constants.ENTRIES_TABLE_NAME, new String[]{"*"}, null, null, null, null, null);
+        //Cursorr cursoror=db.rawQuery("SELECT * FROM "+Constants.NOTIFICATIONS_TABLE_NAME+" ORDER BY "+Constants.NOTIFICATION_TIMESTAMP,null);
+        //for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
+        for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
+            EntriesModel notification_data = new EntriesModel();
+            notification_data.setName(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_NAME)));
+            notification_data.setUid(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_USER_ID)));
+            notification_data.setStatus1(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_STATUS)));
+
             messagesList.add(notification_data);
         }
         cursor.close();
