@@ -49,12 +49,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	SessionManager session;
 	StringRequest stringRequest;
 	RequestQueue requestQueue;
-	
+
 	public EntriesAdapter(List<EntriesModel> entriesModelList, int type, Context context)
 	{
 		this.entriesModelList = entriesModelList;
 		entriesModelListCopy = new ArrayList<EntriesModel>();
-		entriesModelList.addAll(entriesModelList);
+		entriesModelListCopy.addAll(entriesModelList);
 		this.type = type;
 		this.context = context;
 		session = new SessionManager(context);
@@ -114,14 +114,18 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		else
 		{ return (int) entriesModelList.size(); }
 	}
-	
+
 	public void filter(String query)
 	{
+		/*
+		entries :1
+		interested :2
+		 */
 		Log.d("MaterialSearchView", "filter  " + query);
-		Log.v("MaterialSearchView",String.valueOf(type));
+		Log.d("MaterialSearchView",String.valueOf(type));
 		query = query.toLowerCase(Locale.getDefault());
 		entriesModelList.clear();
-		
+
 		if (query.length() == 0)
 		{
 			entriesModelList.addAll(entriesModelListCopy);
@@ -130,39 +134,41 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		{
 			for (int i = 0; i < entriesModelListCopy.size(); i++)
 			{
-				Log.v("MaterialSearchView",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
-				if (type == 1)
+				Log.d("inside for",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
+//				if (type == 1)
+//				{
+				Log.d("EntriesAdapter", "entries search=" + query);
+				//for entries
+				Log.d("inside if type 1",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
+				if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
+						entriesModelListCopy.get(i).getUid().toLowerCase(Locale.getDefault()).contains(query))
 				{
-					Log.d("EntriesAdapter", "entries search=" + query);
-					//for entries
-					Log.v("MaterialSearchView",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
-					if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
-							entriesModelListCopy.get(i).getUid().toLowerCase(Locale.getDefault()).contains(query))
-					{
-						entriesModelList.add(entriesModelListCopy.get(i));
-					}
+					entriesModelList.add(entriesModelListCopy.get(i));
 				}
+//				}
+				/*
 				else
 				{
 					//for interested
 					Log.d("EntriesAdapter", "interested search=" + query);
-					Log.v("MaterialSearchView",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
+					Log.d("inside if type 2",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
 					if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
 							entriesModelListCopy.get(i).getContact().toLowerCase(Locale.getDefault()).contains(query))
 					{
 						entriesModelList.add(entriesModelListCopy.get(i));
 					}
 				}
+				*/
 			}
 		}
-		
+
 		if (entriesModelList.size() == 0)
 		{
-			Log.v("MaterialSearchView","no results");
+			Log.d("MaterialSearchView","no results");
 		}
 		else
 		{
-			Log.v("MaterialSearchView","Oops! something went wrong");
+			Log.d("MaterialSearchView","Oops! something went wrong");
 		}
 		notifyDataSetChanged();
 	}
