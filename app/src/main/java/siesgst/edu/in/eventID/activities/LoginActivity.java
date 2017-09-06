@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity
 					{
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
-						String url = getResources().getString(R.string.LIVE_URL) + "login?email=" + email_entered + "&password=" + password_entered;
+						String url = getResources().getString(R.string.LOCAL_URL) + "login?email=" + email_entered + "&password=" + password_entered;
 						Log.v("url", url);
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
@@ -104,8 +104,8 @@ public class LoginActivity extends AppCompatActivity
 										e.printStackTrace();
 									}
 									
-									first_name = email_entered.substring(0, email_entered.indexOf("."));
-									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
+//									first_name = email_entered.substring(0, email_entered.indexOf("."));
+//									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
 									sessionManager.createLoginSession(email_entered, name, "Maze bot", event_id);
 									Log.v(TAG, "email: " + email_entered);
 									Log.v(TAG, "password: " + password_entered);

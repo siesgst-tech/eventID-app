@@ -29,7 +29,7 @@ to give the app the required permissions.</string >
     
 
 
-    <string name = "LOCAL_URL" >http://192.168.43.221/</string >
+    <string name = "LOCAL_URL" >http://192.168.43.122:8000/api/eventhead/</string >
     
     <string name = "LIVE_URL" >http://cognition.siesgst.ac.in/api/eventhead/</string >
 </resources >

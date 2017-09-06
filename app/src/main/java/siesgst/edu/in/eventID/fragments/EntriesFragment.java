@@ -75,7 +75,7 @@ public class EntriesFragment extends Fragment
 			searchView.closeSearch();
 		}
 		Log.d("MaterialSearchView", "onCreateView");
-
+		
 		searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener()
 		{
 			@Override
@@ -85,7 +85,7 @@ public class EntriesFragment extends Fragment
 				searchView.clearFocus();
 				return true;
 			}
-
+			
 			@Override
 			public boolean onQueryTextChange(String newText)
 			{
@@ -100,15 +100,15 @@ public class EntriesFragment extends Fragment
 		
 		return view;
 	}
-
+	
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		Log.d("MaterialSearchView", "onCreate");
-
+		
 	}
-
+	
 	private void getEntries()
 	{
 		entriesModelList = new ArrayList<EntriesModel>();
@@ -168,23 +168,23 @@ public class EntriesFragment extends Fragment
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerView.setAdapter(entriesAdapter);
 	}
-
-
+	
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		getActivity().getMenuInflater().inflate(R.menu.menu_fragments, menu);
 		MenuItem item = menu.findItem(R.id.action_search);
 		searchView.setMenuItem(item);
 		Log.d("MaterialSearchView", "onCreateOptionsMenu");
-
+		
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d("MaterialSearchView", "onOptionsItemSelected");
-
+		
 		int id = item.getItemId();
-
+		
 		switch (id)
 		{
 			case R.id.action_search:
