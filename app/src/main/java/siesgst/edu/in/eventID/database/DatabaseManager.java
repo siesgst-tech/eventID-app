@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import siesgst.edu.in.eventID.model.EntriesModel;
+import siesgst.edu.in.eventID.model.MessagesModel;
 import siesgst.edu.in.eventID.utils.Constants;
 
 /**
@@ -31,9 +32,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
 
     private static final String CREATE_MESSAGES_TABLE = "CREATE TABLE " + Constants.MESSAGES_TABLE_NAME + "(  " +
-            Constants.EVENT_ID + " int(11) NOT NULL, " +
-            Constants.MESSAGE_TITLE + " varchar(255) NOT NULL, " +
-            Constants.MESSAGE_CONTENT + " varchar(255) NOT NULL )";
+            Constants.MESSAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            Constants.MESSAGE_TITLE + " VARCHAR DEFAULT NULL, " +
+            Constants.MESSAGE_BODY + " VARCHAR DEFAULT NULL )";
 
     private static final String CREATE_INTERESTED_TABLE = "CREATE TABLE " + Constants.INTERESTED_TABLE_NAME + " ( " +
             Constants.INTERESTED_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -119,6 +120,31 @@ public class DatabaseManager extends SQLiteOpenHelper {
         cursor.close();
     }
 
+    public void insertMessages(HashMap<String, String> map) {
+        SQLiteDatabase db = getWritableDatabase();
+		Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.MESSAGES_TABLE_NAME + " WHERE " + Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
+		int flag = 0;
+		if (cursor.getCount() > 0)
+		{ flag = 1; }
+        ContentValues values = new ContentValues();
+		values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
+        values.put(Constants.MESSAGE_TITLE, map.get(Constants.MESSAGE_TITLE));
+        values.put(Constants.MESSAGE_BODY, map.get(Constants.MESSAGE_BODY));
+
+//        db.insert(NOTIFICATIONS_TABLE_NAME, null, values);
+
+		if (flag == 0)
+		{
+        db.insert(Constants.MESSAGES_TABLE_NAME, null, values);
+
+		}
+		else
+		{
+			db.update(Constants.MESSAGES_TABLE_NAME, values, Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
+		}
+		cursor.close();
+    }
+
     public ArrayList<EntriesModel> getAllInterested() {
 
         ArrayList<EntriesModel> messagesList = new ArrayList<>();
@@ -150,6 +176,23 @@ public class DatabaseManager extends SQLiteOpenHelper {
             notification_data.setUid(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_USER_ID)));
             notification_data.setStatus1(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_STATUS)));
 
+            messagesList.add(notification_data);
+        }
+        cursor.close();
+        db.close();
+        return messagesList;
+    }
+
+    public ArrayList<MessagesModel> getAllMessages() {
+        ArrayList<MessagesModel> messagesList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(Constants.MESSAGES_TABLE_NAME, new String[]{"*"}, null, null, null, null, null);
+        //Cursorr cursoror=db.rawQuery("SELECT * FROM "+Constants.NOTIFICATIONS_TABLE_NAME+" ORDER BY "+Constants.NOTIFICATION_TIMESTAMP,null);
+        //for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
+        for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
+            MessagesModel notification_data = new MessagesModel();
+            notification_data.setTitle(cursor.getString(cursor.getColumnIndex(Constants.MESSAGE_TITLE)));
+            notification_data.setDescription(cursor.getString(cursor.getColumnIndex(Constants.MESSAGE_BODY)));
             messagesList.add(notification_data);
         }
         cursor.close();

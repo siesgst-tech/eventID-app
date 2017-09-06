@@ -1,6 +1,10 @@
 package siesgst.edu.in.eventID.fragments;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,11 +33,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import siesgst.edu.in.eventID.R;
+import siesgst.edu.in.eventID.adapters.EntriesAdapter;
 import siesgst.edu.in.eventID.adapters.MessagesAdapter;
+import siesgst.edu.in.eventID.database.DatabaseManager;
 import siesgst.edu.in.eventID.model.MessagesModel;
+import siesgst.edu.in.eventID.utils.Constants;
 import siesgst.edu.in.eventID.utils.SessionManager;
 
 /**
@@ -42,12 +51,17 @@ import siesgst.edu.in.eventID.utils.SessionManager;
 public class MessagesFragment extends Fragment
 {
 	FloatingActionButton fab;
-	List<MessagesModel> messages;
+	List<MessagesModel> messages = new ArrayList<>();
 	RecyclerView recyclerView;
 	SessionManager session;
 	StringRequest stringRequest;
 	StringRequest stringRequest_;
 	RequestQueue requestQueue;
+	ConnectivityManager connectivityManager;
+	NetworkInfo activeNetwork;
+	ProgressBar progressBar;
+	DatabaseManager databaseManager;
+	MessagesAdapter messagesAdapter;
 	
 	@Nullable
 	@Override
@@ -55,9 +69,18 @@ public class MessagesFragment extends Fragment
 	{
 		View view = inflater.inflate(R.layout.fragment_messages, container, false);
 		session = new SessionManager(getActivity());
+		databaseManager = new DatabaseManager(getActivity());
 		requestQueue = Volley.newRequestQueue(getActivity());
+
+		connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		activeNetwork = connectivityManager.getActiveNetworkInfo();
+
 		recyclerView = (RecyclerView) view.findViewById(R.id.messages_recycler);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		recyclerView.setAdapter(new MessagesAdapter(messages));
+
 		fab = (FloatingActionButton) view.findViewById(R.id.new_message);
+		progressBar = (ProgressBar)view.findViewById(R.id.messages_progress);
 		fab.setImageResource(R.drawable.create);
 		fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green_tick)));
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -109,8 +132,14 @@ public class MessagesFragment extends Fragment
 				});
 			}
 		});
-		getMessages();
-		setAdapter();
+		//getMessages();
+		//setAdapter();
+		new getMessagesFromDb().execute();
+
+
+		if (connectivityManager.getActiveNetworkInfo() != null) {
+			getMessages();
+		}
 		return view;
 	}
 	
@@ -140,8 +169,16 @@ public class MessagesFragment extends Fragment
 						int event_id = object.optInt("event_id");
 						String title = object.optString("title");
 						String body = object.optString("body");
-						messages.add(new MessagesModel(title, body));
+						//messages.add(new MessagesModel(title, body));
+
+						HashMap<String, String> map = new HashMap<>();
+						map.put(Constants.MESSAGE_ID, String.valueOf(id));
+						map.put(Constants.MESSAGE_TITLE, title);
+						map.put(Constants.MESSAGE_BODY, body);
+
+						databaseManager.insertMessages(map);
 					}
+					new getMessagesFromDb().execute();
 				}
 				catch (JSONException e)
 				{
@@ -178,6 +215,40 @@ public class MessagesFragment extends Fragment
 		messages.add(new MessagesModel("Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
 		
+	}
+
+	public class getMessagesFromDb extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			Log.d("MessagesFragment", "onPreExecute ");
+			super.onPreExecute();
+			progressBar.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			messages = databaseManager.getAllMessages();
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			Log.d("MessagesFragment", "onPostExecute entriesModels size=" + messages.size());
+			if (messages.size() == 0) {
+				//errorLayout.setVisibility(View.VISIBLE);
+				//errorText.setText("Messages from events you participate in\nwill appear here.");
+				//errorTextView.setText(R.string.fa_bell_o);
+			} else {
+				//errorLayout.setVisibility(View.GONE);
+				messagesAdapter = new MessagesAdapter(messages);
+				recyclerView.setAdapter(messagesAdapter);
+				messagesAdapter.notifyDataSetChanged();
+			}
+			progressBar.setVisibility(View.GONE);
+		}
 	}
 }
 

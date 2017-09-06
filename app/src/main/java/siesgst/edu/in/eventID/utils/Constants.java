@@ -36,8 +36,9 @@ public class Constants
 
 	
 	// messages
+	public static final String MESSAGE_ID = "id";
 	public static final String MESSAGE_TITLE = "title";
-	public static final String MESSAGE_CONTENT = "content";
+	public static final String MESSAGE_BODY = "body";
 	
 	
 	// shared pref

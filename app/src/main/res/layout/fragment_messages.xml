@@ -25,4 +25,11 @@
 	 app:fabSize = "normal"
 	 app:rippleColor = "@color/green_tick" />
 
+	<ProgressBar
+		android:visibility="gone"
+		android:id="@+id/messages_progress"
+		android:layout_centerInParent="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
+
 </RelativeLayout >

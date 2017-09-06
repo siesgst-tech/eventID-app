@@ -7,7 +7,10 @@ package siesgst.edu.in.eventID.model;
 public class MessagesModel
 {
 	String title, description;
-	
+
+	public MessagesModel() {
+	}
+
 	public MessagesModel(String title, String description)
 	{
 		this.title = title;
