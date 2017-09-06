@@ -8,7 +8,7 @@ public class EntriesModel
 {
 	private String name, uid, id, email, contact;
 	
-	private String receipt_number, paid;
+	private String receipt_number, status1;
 	
 	private String cost;
 	
@@ -22,7 +22,7 @@ public class EntriesModel
 		this.prn = prn;
 	}
 	
-	public EntriesModel(String name, String uid, String id, String receipt_number, String email, String contact, String paid)
+	public EntriesModel(String name, String uid, String id, String receipt_number, String email, String contact, String status1)
 	{
 		this.name = name;
 		this.uid = uid;
@@ -30,7 +30,7 @@ public class EntriesModel
 		this.email = email;
 		this.contact = contact;
 		this.receipt_number = receipt_number;
-		this.paid = paid;
+		this.status1 = status1;
 	}
 	
 	public EntriesModel(String name, String uid, String id, String email, String contact)
@@ -102,16 +102,15 @@ public class EntriesModel
 		this.receipt_number = receipt_number;
 	}
 	
-	public String getPaid()
+	public String getStatus1()
 	{
-		return paid;
+		return status1;
 	}
 	
-	public void setPaid(String paid)
+	public void setStatus1(String status1)
 	{
-		this.paid = paid;
+		this.status1 = status1;
 	}
-	
 	
 	public int getStatus()
 	{

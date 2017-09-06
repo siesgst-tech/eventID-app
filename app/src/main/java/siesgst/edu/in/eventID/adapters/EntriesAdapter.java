@@ -37,15 +37,14 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	// type: 1 = entries; 2 = interested
 	// status: 1 = played; 2 = not played
 	public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1232;
-	List<EntriesModel> entriesModelList = new ArrayList<EntriesModel>();
-	List<EntriesModel> entriesModelListCopy;
+	List<EntriesModel> entriesModelList,entriesModelListCopy;
 	int type;
 	Context context;
 	
 	public EntriesAdapter(List<EntriesModel> entriesModelList, int type, Context context)
 	{
 		this.entriesModelList = entriesModelList;
-		entriesModelListCopy=new ArrayList<>();
+		entriesModelListCopy = new ArrayList<EntriesModel>();
 		entriesModelList.addAll(entriesModelList);
 		this.type = type;
 		this.context = context;
@@ -77,13 +76,13 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 			holder.entry_tick.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_fontawesome)));
 			holder.entry_name.setText(entriesModelList.get(position).getName());
 			holder.entry_prn.setText(entriesModelList.get(position).getUid());
-			if (entriesModelList.get(position).getPaid().equalsIgnoreCase("1"))
+			if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("1"))
 			{
 				// played
-				holder.entry_check.setVisibility(GONE);
 				holder.entry_tick.setVisibility(View.VISIBLE);
+				holder.entry_check.setVisibility(View.GONE);
 			}
-			else if (entriesModelList.get(position).getPaid().equalsIgnoreCase("2"))
+			else if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("0"))
 			{
 				// not played
 				holder.entry_tick.setVisibility(GONE);
@@ -107,6 +106,58 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		{ return (int) entriesModelList.size(); }
 	}
 	
+	public void filter(String query)
+	{
+		Log.d("MaterialSearchView", "filter  " + query);
+		Log.v("MaterialSearchView",String.valueOf(type));
+		query = query.toLowerCase(Locale.getDefault());
+		entriesModelList.clear();
+		
+		if (query.length() == 0)
+		{
+			entriesModelList.addAll(entriesModelListCopy);
+		}
+		else
+		{
+			for (int i = 0; i < entriesModelListCopy.size(); i++)
+			{
+				Log.v("MaterialSearchView",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
+				if (type == 1)
+				{
+					Log.d("EntriesAdapter", "entries search=" + query);
+					//for entries
+					Log.v("MaterialSearchView",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
+					if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
+							entriesModelListCopy.get(i).getUid().toLowerCase(Locale.getDefault()).contains(query))
+					{
+						entriesModelList.add(entriesModelListCopy.get(i));
+					}
+				}
+				else
+				{
+					//for interested
+					Log.d("EntriesAdapter", "interested search=" + query);
+					Log.v("MaterialSearchView",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
+					if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
+							entriesModelListCopy.get(i).getContact().toLowerCase(Locale.getDefault()).contains(query))
+					{
+						entriesModelList.add(entriesModelListCopy.get(i));
+					}
+				}
+			}
+		}
+		
+		if (entriesModelList.size() == 0)
+		{
+			Log.v("MaterialSearchView","no results");
+		}
+		else
+		{
+			Log.v("MaterialSearchView","Oops! something went wrong");
+		}
+		notifyDataSetChanged();
+	}
+	
 	class EntriesViewHolder extends RecyclerView.ViewHolder
 	{
 		// entries
@@ -119,7 +170,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		EntriesViewHolder(View itemView)
 		{
 			super(itemView);
-			if(type==1)
+			if (type == 1)
 			{
 				// entries
 				entry_name = (TextView) itemView.findViewById(R.id.entry_name);
@@ -127,13 +178,14 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				entry_tick = (TextView) itemView.findViewById(R.id.entry_tick);
 				entry_check = (CheckBox) itemView.findViewById(R.id.entry_check);
 			}
-			else if(type==2)
+			else if (type == 2)
 			{
 				// interested
 				interested_name = (TextView) itemView.findViewById(R.id.interested_name);
 				interested_prn = (TextView) itemView.findViewById(R.id.interested_prn);
 				interested_phone = (TextView) itemView.findViewById(R.id.interested_phone);
-				interested_phone.setOnClickListener(new View.OnClickListener() {
+				interested_phone.setOnClickListener(new View.OnClickListener()
+				{
 					@Override
 					public void onClick(View view)
 					{
@@ -172,49 +224,5 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				});
 			}
 		}
-	}
-
-
-	public void filter(String query){
-
-			query = query.toLowerCase(Locale.getDefault());
-			entriesModelList.clear();
-			if (query.length() == 0)
-			{
-				entriesModelList.addAll(entriesModelListCopy);
-
-			}
-			else
-			{
-				for (int i = 0; i < entriesModelListCopy.size(); i++) {
-					if (type == 1){
-
-						Log.d("EntriesAdapter","entries search="+query);
-						//for entries
-						if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
-								entriesModelListCopy.get(i).getUid().toLowerCase(Locale.getDefault()).contains(query)) {
-							entriesModelList.add(entriesModelListCopy.get(i));
-						}
-					}
-					else{
-						//for interested
-						Log.d("EntriesAdapter","interested search="+query);
-
-						if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
-								entriesModelListCopy.get(i).getContact().toLowerCase(Locale.getDefault()).contains(query)) {
-							entriesModelList.add(entriesModelListCopy.get(i));
-						}
-
-					}
-				}
-			}
-
-
-
-
-			notifyDataSetChanged();
-
-
-
 	}
 }

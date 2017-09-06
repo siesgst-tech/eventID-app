@@ -28,7 +28,7 @@ import siesgst.edu.in.eventID.model.MessagesModel;
 public class MessagesFragment extends Fragment
 {
 	FloatingActionButton fab;
-	List<MessagesModel> messages = new ArrayList<>();
+	List<MessagesModel> messages;
 	RecyclerView recyclerView;
 	
 	@Nullable
@@ -73,6 +73,7 @@ public class MessagesFragment extends Fragment
 	
 	public void init()
 	{
+		messages = new ArrayList<MessagesModel>();
 		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +
 				"Description goes here. Description goes here. Description goes here"));
 		messages.add(new MessagesModel("Maze Bot", "Title goes here", "Description goes here. Description goes here. Description goes here. Description goes here. " +

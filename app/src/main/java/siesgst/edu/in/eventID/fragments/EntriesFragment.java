@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -41,21 +40,34 @@ import siesgst.edu.in.eventID.utils.SessionManager;
 public class EntriesFragment extends Fragment
 {
 	private static final String LOG_TAG = EntriesFragment.class.getSimpleName();
-	List<EntriesModel> entriesModelList = new ArrayList<EntriesModel>();
+	List<EntriesModel> entriesModelList;
 	RecyclerView recyclerView;
 	String event_id, id, uid, cost;
-	String name, event_status,receipt_no,email,contact,paid;
+	String name, event_status,receipt_no,email,contact,status1;
 	SessionManager session;
 	MaterialSearchView searchView;
 	EntriesAdapter entriesAdapter;
 
 
+	/*
+	
+	status:
+		0: can play (not played)
+		1: cannot play ( played)
+	
+	status change karne: uid and event id
+	POST:
+	http://cognition.siesgst.ac.in/api/eventhead/play
+	
+	*/
+	
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_entries, container, false);
 		session = new SessionManager(getActivity());
+		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
 		//setHasOptionsMenu(true);
 		searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
 		if (searchView.isSearchOpen())
@@ -71,7 +83,6 @@ public class EntriesFragment extends Fragment
 			{
 				entriesAdapter.filter(query);
 				searchView.clearFocus();
-
 				return true;
 			}
 
@@ -83,11 +94,9 @@ public class EntriesFragment extends Fragment
 				return false;
 			}
 		});
-
-
-		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
+		
 		getEntries();
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		
 		return view;
 	}
@@ -127,8 +136,8 @@ public class EntriesFragment extends Fragment
 								receipt_no = messageObject.optString("receipt_no");
 								email = messageObject.optString("email");
 								contact = messageObject.optString("contact");
-								paid = messageObject.optString("paid");
-								entriesModelList.add(new EntriesModel(name,uid,id,receipt_no,email,contact,paid));
+								status1 = messageObject.optString("status");
+								entriesModelList.add(new EntriesModel(name,uid,id,receipt_no,email,contact,status1));
 							}
 							settingAdapter();
 						}
@@ -156,6 +165,7 @@ public class EntriesFragment extends Fragment
 	public void settingAdapter()
 	{
 		entriesAdapter=new EntriesAdapter(entriesModelList, 1, getActivity());
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerView.setAdapter(entriesAdapter);
 	}
 
