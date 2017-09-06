@@ -41,7 +41,10 @@ public class EntriesModel
 		this.email = email;
 		this.contact = contact;
 	}
-	
+
+	public EntriesModel() {
+	}
+
 	public String getName()
 	{
 		return name;

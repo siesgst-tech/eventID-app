@@ -22,10 +22,19 @@ public class Constants
 	public static final String ENTRIES_EVENT_ID = "event_id";
 	public static final String ENTRIES_COST = "cost";
 	public static final String ENTRIES_STATUS = "status";
+
+	// interested
+	public static final String INTERESTED_ID = "id";
+	public static final String INTERESTED_USER_ID = "user_id";
+	public static final String INTERESTED_EVENT_ID = "event_id";
+	public static final String INTERESTED_NAME = "name";
+	public static final String INTERESTED_EMAIL = "email";
+	public static final String INTERESTED_CONTACT = "contact";
+
 	
 	// messages
 	public static final String MESSAGE_TITLE = "title";
-	public static final String MESSAGE_MESSAGE = "message";
+	public static final String MESSAGE_CONTENT = "content";
 	
 	
 	// shared pref
