@@ -26,6 +26,9 @@ to give the app the required permissions.</string >
 	<string name = "fa_inr" >&#xf156;</string >
     <string name = "fa_phone" >&#xf095;</string >
     <string name = "fa_check" >&#xf00c;</string >
+    <string name = "fa_check_square">&#xf14a;</string>
+	<string name = "fa_square_o">&#xf096;</string>
+	<string name = "fa_check_square_o">&#xf046;</string>
     
 
 

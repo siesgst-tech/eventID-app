@@ -94,6 +94,7 @@ public class SessionManager
 		return sharedPreferences.getString(EVENT_NAME, "event_name_else");
 	}
 	
+	
 	public boolean isLoggedIn()
 	{
 		return sharedPreferences.getBoolean(IS_LOGIN, false);

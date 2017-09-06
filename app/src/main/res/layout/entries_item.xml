@@ -1,76 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+                xmlns:app = "http://schemas.android.com/apk/res-auto"
+                xmlns:tools = "http://schemas.android.com/tools"
+                android:layout_width = "match_parent"
+                android:layout_height = "wrap_content" >
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:padding="4dp"
-        app:cardElevation="3dp">
+     android:layout_width = "match_parent"
+     android:layout_height = "wrap_content"
+     android:layout_margin = "4dp"
+     android:padding = "4dp"
+     app:cardElevation = "3dp" >
 
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
+         android:layout_width = "match_parent"
+         android:layout_height = "wrap_content"
+         android:padding = "10dp" >
 
             <TextView
-                android:id="@+id/entry_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:paddingTop="4dp"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                tools:text="Rohit Ramaswamy" />
+             android:id = "@+id/entry_name"
+             android:layout_width = "wrap_content"
+             android:layout_height = "wrap_content"
+             android:paddingBottom = "4dp"
+             android:paddingEnd = "8dp"
+             android:paddingStart = "8dp"
+             android:paddingTop = "4dp"
+             android:textSize = "24sp"
+             android:textStyle = "bold"
+             tools:text = "Rohit Ramaswamy" />
 
             <TextView
-                android:id="@+id/event_prn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/entry_name"
-                android:paddingBottom="4dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:paddingTop="4dp"
-                android:textSize="18sp"
-                tools:text="115A1018" />
-
-
-            <CheckBox
-                android:id="@+id/entry_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:buttonTint="@color/green_tick"
-                android:paddingEnd="16dp"
-                android:visibility="gone"
-                app:buttonTint="@color/green_tick"
-                tools:ignore="MissingPrefix" />
-
+             android:id = "@+id/event_prn"
+             android:layout_width = "wrap_content"
+             android:layout_height = "wrap_content"
+             android:layout_below = "@id/entry_name"
+             android:paddingBottom = "4dp"
+             android:paddingEnd = "8dp"
+             android:paddingStart = "8dp"
+             android:paddingTop = "4dp"
+             android:textSize = "18sp"
+             tools:text = "115A1018" />
+	        
+	        
             <TextView
-                android:id="@+id/entry_tick"
-                fontPath="@string/font_fontawesome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:paddingEnd="16dp"
-                android:text="@string/fa_check"
-                android:textColor="@color/green_tick"
-                android:textSize="18sp"
-                tools:ignore="MissingPrefix" />
+             android:id = "@+id/entry_tick"
+             fontPath = "@string/font_fontawesome"
+             android:layout_width = "wrap_content"
+             android:layout_height = "wrap_content"
+             android:layout_alignParentEnd = "true"
+             android:layout_centerVertical = "true"
+             android:paddingEnd = "16dp"
+             android:text = "@string/fa_check"
+             android:textColor = "@color/green_tick"
+             android:textSize = "18sp"
+             android:visibility = "visible"
+             tools:ignore = "MissingPrefix" />
 
-        </RelativeLayout>
+        </RelativeLayout >
 
-    </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView >
 
 
-</RelativeLayout>
+</RelativeLayout >

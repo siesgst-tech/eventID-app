@@ -53,7 +53,7 @@ public class EntriesFragment extends Fragment
 	
 	status:
 		0: can play (not played)
-		1: cannot play ( played)
+		1: cannot play (played)
 	
 	status change karne: uid and event id
 	POST:

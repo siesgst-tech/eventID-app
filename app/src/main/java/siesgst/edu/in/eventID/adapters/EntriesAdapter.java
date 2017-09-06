@@ -14,8 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +31,7 @@ import java.util.Locale;
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.activities.RequestPermissionActivity;
 import siesgst.edu.in.eventID.model.EntriesModel;
-
-import static android.view.View.GONE;
+import siesgst.edu.in.eventID.utils.SessionManager;
 
 /**
  * Created by rohitramaswamy on 27/07/17.
@@ -40,6 +46,9 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	List<EntriesModel> entriesModelList,entriesModelListCopy;
 	int type;
 	Context context;
+	SessionManager session;
+	StringRequest stringRequest;
+	RequestQueue requestQueue;
 	
 	public EntriesAdapter(List<EntriesModel> entriesModelList, int type, Context context)
 	{
@@ -48,6 +57,8 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		entriesModelList.addAll(entriesModelList);
 		this.type = type;
 		this.context = context;
+		session = new SessionManager(context);
+		requestQueue = Volley.newRequestQueue(context);
 	}
 	
 	
@@ -79,14 +90,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 			if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("1"))
 			{
 				// played
-				holder.entry_tick.setVisibility(View.VISIBLE);
-				holder.entry_check.setVisibility(View.GONE);
+				holder.entry_tick.setText(context.getString(R.string.fa_check_square_o));
 			}
 			else if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("0"))
 			{
 				// not played
-				holder.entry_tick.setVisibility(GONE);
-				holder.entry_check.setVisibility(View.VISIBLE);
+				holder.entry_tick.setText(context.getString(R.string.fa_square_o));
 			}
 		}
 		else
@@ -162,7 +171,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	{
 		// entries
 		private TextView entry_name, entry_prn, entry_tick;
-		private CheckBox entry_check;
 		
 		// interested
 		private TextView interested_name, interested_prn, interested_phone;
@@ -176,7 +184,35 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				entry_name = (TextView) itemView.findViewById(R.id.entry_name);
 				entry_prn = (TextView) itemView.findViewById(R.id.event_prn);
 				entry_tick = (TextView) itemView.findViewById(R.id.entry_tick);
-				entry_check = (CheckBox) itemView.findViewById(R.id.entry_check);
+				entry_tick.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view)
+					{
+						String url = context.getString(R.string.LIVE_URL)+"play?event_id="+session.getEventId()+"&uid="
+								+entriesModelList.get(getAdapterPosition()).getUid();
+						Log.v("play",url);
+						stringRequest = new StringRequest(Request.Method.POST, url
+								, new Response.Listener<String>()
+						{
+							@Override
+							public void onResponse(String response)
+							{
+								if(response.contains("success"))
+								{
+									Toast.makeText(context,"Status inverted",Toast.LENGTH_SHORT).show();
+									notifyDataSetChanged();
+								}
+							}
+						}, new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error)
+							{
+								Log.v("onError",error.toString());
+								notifyDataSetChanged();
+							}
+						});
+					}
+				});
 			}
 			else if (type == 2)
 			{

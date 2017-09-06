@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity
 					{
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
-						String url = getResources().getString(R.string.LOCAL_URL) + "login?email=" + email_entered + "&password=" + password_entered;
+						String url = getResources().getString(R.string.LIVE_URL) + "login?email=" + email_entered + "&password=" + password_entered;
 						Log.v("url", url);
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
@@ -165,3 +165,25 @@ public class LoginActivity extends AppCompatActivity
 		super.onBackPressed();
 	}
 }
+
+
+
+
+
+/*
+ 
+ 
+{
+    "status": "success",
+    "response": {
+        "id": 1,
+        "name": "Vinay",
+        "email": "vinayambre7@gmail.com",
+        "event_id": 2,
+        "created_at": null,
+        "updated_at": null,
+        "event_name": "Tanks"
+    }
+}
+ 
+ */
