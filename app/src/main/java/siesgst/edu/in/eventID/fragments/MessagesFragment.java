@@ -107,6 +107,7 @@ public class MessagesFragment extends Fragment
 						Log.v("message",message);
 						if(message.length()>0)
 						{
+							Log.v("event_name",session.getEventName());
 							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
 									+"&title="+session.getEventName()+"&body="+message;
 //							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()

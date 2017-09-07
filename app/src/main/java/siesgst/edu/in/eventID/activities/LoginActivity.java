@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity
 	private static final String TAG = LoginActivity.class.getSimpleName();
 	EditText email, password;
 	Button login;
-	String email_entered, password_entered, first_name, last_name;
+	String email_entered, password_entered, event_name;
 	String name, prn, branch, year, role;
 	int id, event_id;
 	RelativeLayout login_layout;
@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity
 										JSONObject content = root.optJSONObject("response");
 										id = content.optInt("id");
 										name = content.optString("name");
+										event_name = content.optString("event_name");
 										email_entered = content.optString("email");
 										event_id = content.optInt("event_id");
 										Log.v("details", id + " " + name + "  " + email_entered + "  " + String.valueOf(event_id));
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity
 									
 //									first_name = email_entered.substring(0, email_entered.indexOf("."));
 //									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
-									sessionManager.createLoginSession(email_entered, name, "Maze bot", event_id);
+									sessionManager.createLoginSession(email_entered, name, event_name, event_id);
 									Log.v(TAG, "email: " + email_entered);
 									Log.v(TAG, "password: " + password_entered);
 									progressBar.setVisibility(View.INVISIBLE);

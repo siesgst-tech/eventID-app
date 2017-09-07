@@ -198,5 +198,20 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
         return messagesList;
     }
+    
+    
+    
+    public void dropAll()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS "+ Constants.ENTRIES_TABLE_NAME);
+		db.execSQL(CREATE_ENTRIES_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS "+ Constants.INTERESTED_TABLE_NAME);
+		db.execSQL(CREATE_INTERESTED_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS "+ Constants.MESSAGES_TABLE_NAME);
+		db.execSQL(CREATE_MESSAGES_TABLE);
+    }
+    
+        
 
 }

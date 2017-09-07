@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import siesgst.edu.in.eventID.activities.LoginActivity;
+import siesgst.edu.in.eventID.database.DatabaseManager;
 
 import static siesgst.edu.in.eventID.utils.Constants.EVENT_NAME;
 import static siesgst.edu.in.eventID.utils.Constants.FULL_NAME;
@@ -22,6 +23,8 @@ public class SessionManager
 	public static final int PRIVATE_MODE = 0;
 	public static final String LOG_TAG = SessionManager.class.getSimpleName();
 	
+	DatabaseManager databaseManager;
+	
 	Context context;
 	
 	SharedPreferences sharedPreferences;
@@ -33,6 +36,7 @@ public class SessionManager
 		this.context = context;
 		sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 		editor = sharedPreferences.edit();
+		databaseManager = new DatabaseManager(context);
 	}
 	
 	// method to initialise login
@@ -52,6 +56,9 @@ public class SessionManager
 	{
 		editor.clear();
 		editor.commit();
+		
+		databaseManager.dropAll();
+		
 		// After logout redirect user to Main Activity
 		Intent i = new Intent(context, LoginActivity.class);
 		// Closing all the Activities
@@ -59,6 +66,8 @@ public class SessionManager
 		
 		// Add new Flag to start new Activity
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		
 		
 		// Staring LoginActivity Activity
 		context.startActivity(i);
