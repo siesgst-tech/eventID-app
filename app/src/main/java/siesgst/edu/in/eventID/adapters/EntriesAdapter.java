@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,11 +92,14 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 			if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("1"))
 			{
 				// played
+				Log.d("PlayStatusCheck",entriesModelList.get(position).getName()+" check");
 				holder.entry_tick.setText(context.getString(R.string.fa_check_square_o));
 			}
 			else if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("0"))
 			{
 				// not played
+				Log.d("PlayStatusCheck",entriesModelList.get(position).getName()+" uncheck");
+
 				holder.entry_tick.setText(context.getString(R.string.fa_square_o));
 			}
 		}
@@ -181,7 +185,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		
 		// interested
 		private TextView interested_name, interested_prn, interested_phone;
-
+		ProgressBar progressBar;
 		DatabaseManager databaseManager = new DatabaseManager(context);
 		
 		EntriesViewHolder(View itemView)
@@ -193,10 +197,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				entry_name = (TextView) itemView.findViewById(R.id.entry_name);
 				entry_prn = (TextView) itemView.findViewById(R.id.event_prn);
 				entry_tick = (TextView) itemView.findViewById(R.id.entry_tick);
+				progressBar=(ProgressBar)itemView.findViewById(R.id.entry_progress_bar);
 				entry_tick.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view)
 					{
+						progressBar.setVisibility(View.VISIBLE);
 						
 						String url = context.getString(R.string.LIVE_URL)+"play?event_id="+session.getEventId()+"&uid="
 								+entriesModelList.get(getAdapterPosition()).getUid();
@@ -207,10 +213,20 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 							@Override
 							public void onResponse(String response)
 							{
+								progressBar.setVisibility(View.GONE);
 								Log.v("resp",response);
 								if(response.contains("success"))
 								{
-									databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid());
+
+									if(entriesModelList.get(getAdapterPosition()).getStatus1().equals("0")) {
+										entriesModelList.get(getAdapterPosition()).setStatus1("1");
+										databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid(),"1");
+									}
+									else{
+										entriesModelList.get(getAdapterPosition()).setStatus1("0");
+										databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid(),"0");
+
+									}
 									Toast.makeText(context,"Status inverted",Toast.LENGTH_SHORT).show();
 									notifyDataSetChanged();
 								}
@@ -219,6 +235,8 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 							@Override
 							public void onErrorResponse(VolleyError error)
 							{
+								progressBar.setVisibility(View.GONE);
+
 								Log.v("onError",error.toString());
 								notifyDataSetChanged();
 							}

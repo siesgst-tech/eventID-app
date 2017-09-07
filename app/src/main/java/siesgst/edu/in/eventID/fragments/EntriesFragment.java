@@ -166,6 +166,7 @@ public class EntriesFragment extends Fragment
 								contact = messageObject.optString("contact");
 								status1 = messageObject.optString("status");
 								//entriesModelList.add(new EntriesModel(name,uid,id,receipt_no,email,contact,status1));
+								Log.d("PlayStatusCheck","API name= "+name+" status="+status1);
 
 								HashMap<String, String> map = new HashMap<>();
 								map.put(Constants.ENTRIES_ID, id);

@@ -172,6 +172,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
             notification_data.setName(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_NAME)));
             notification_data.setUid(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_USER_ID)));
             notification_data.setStatus1(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_STATUS)));
+            String name=cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_NAME));
+            String status=cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_STATUS));
+            Log.d("PlayStatusCheck","name= "+name+" status="+status);
+
 
             messagesList.add(notification_data);
         }
@@ -207,23 +211,57 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_MESSAGES_TABLE);
     }
 
-    public void toggleStatus(String uid){
+//    public void toggleStatus(String uid) {
+//
+//        SQLiteDatabase db = getWritableDatabase();
+//
+//        Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.ENTRIES_TABLE_NAME + " WHERE " + Constants.ENTRIES_USER_ID + " LIKE '" + uid + "'", null);
+//        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+//
+//            if (cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_STATUS)).equals("0")) {
+//                ContentValues values = new ContentValues();
+//                values.put(Constants.ENTRIES_STATUS, "1");
+//                Log.d("PlayStatusCheck","status=1");
+//
+//                db.update(Constants.ENTRIES_TABLE_NAME, values, Constants.ENTRIES_STATUS + " LIKE '" + uid + "'", null);
+//            } else {
+//                ContentValues values = new ContentValues();
+//                values.put(Constants.ENTRIES_STATUS, "0");
+//                Log.d("PlayStatusCheck","status=0");
+//
+//                db.update(Constants.ENTRIES_TABLE_NAME, values, Constants.ENTRIES_STATUS + " LIKE '" + uid + "'", null);
+//            }
+//        }
+//
+//        cursor.close();
+//
+//    }
 
+    public void toggleStatus(String uid,String status){
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ Constants.ENTRIES_TABLE_NAME +" WHERE "+Constants.ENTRIES_USER_ID + " LIKE '"+uid+"'",null);
+        Log.d("PlayStatusCheck","status="+status);
+        String updateQuery="UPDATE "+Constants.ENTRIES_TABLE_NAME+" SET "+Constants.ENTRIES_STATUS+" = '"+status+"' WHERE "+Constants.ENTRIES_USER_ID+" LIKE '"+uid+"'";
+        db.execSQL(updateQuery);
+    }
 
-        if (cursor.getString(1).equals("0")){
-            ContentValues values = new ContentValues();
-            values.put(Constants.ENTRIES_STATUS,"1");
-            db.update(Constants.ENTRIES_TABLE_NAME,values,Constants.ENTRIES_STATUS + " LIKE '"+uid+"'",null);
-        }
-        else {
-            ContentValues values = new ContentValues();
-            values.put(Constants.ENTRIES_STATUS,"0");
-            db.update(Constants.ENTRIES_TABLE_NAME,values,Constants.ENTRIES_STATUS + " LIKE '"+uid+"'",null);
+
+
+
+    public String getToggleStatus(String uid){
+        SQLiteDatabase db = getWritableDatabase();
+        String result="0";
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.ENTRIES_TABLE_NAME , null);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+
+            if (cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_USER_ID)).equals(uid)) {
+                result=cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_STATUS));
+                break;
+            }
         }
 
         cursor.close();
+        Log.d("PlayStatusCheck","result="+result);
+        return result;
     }
 
 }

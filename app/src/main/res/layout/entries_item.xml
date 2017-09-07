@@ -50,12 +50,23 @@
              android:layout_height = "wrap_content"
              android:layout_alignParentEnd = "true"
              android:layout_centerVertical = "true"
-             android:paddingEnd = "16dp"
-             android:text = "@string/fa_check"
+             android:text = "@string/fa_check" android:padding="16dp"
              android:textColor = "@color/green_tick"
              android:textSize = "18sp"
              android:visibility = "visible"
+                android:background="?selectableItemBackground"
              tools:ignore = "MissingPrefix" />
+
+            <ProgressBar
+                android:id="@+id/entry_progress_bar"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd = "true"
+                android:layout_centerVertical = "true"
+                android:paddingEnd = "16dp"
+                android:indeterminateTint="@color/green_tick"
+                android:visibility="gone"
+                />
 
         </RelativeLayout >
 
