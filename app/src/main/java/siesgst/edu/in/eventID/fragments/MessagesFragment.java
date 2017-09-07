@@ -105,10 +105,14 @@ public class MessagesFragment extends Fragment
 					{
 						// call message api here
 						String message = contactEditText.getText().toString().trim();
+						Log.v("message",message);
 						if(message.length()>0)
 						{
+//							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
+//									+"&title="+session.getEventName()+"&body="+message;
 							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
-									+"&title="+session.getEventName()+"&body="+message;
+									+"&title=MazeBot"+"&body="+message;
+							Log.v("messageUrl",url);
 							stringRequest_ = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 							{
 								@Override
@@ -127,6 +131,7 @@ public class MessagesFragment extends Fragment
 									Snackbar.make(getActivity().findViewById(R.id.fragment_messages),"Please try again later",Snackbar.LENGTH_SHORT).show();
 								}
 							});
+							requestQueue.add(stringRequest_);
 						}
 					}
 				});
