@@ -150,6 +150,7 @@ public class EntriesFragment extends Fragment
 					@Override
 					public void onResponse(JSONObject response)
 					{
+						Log.v("entries",response.toString());
 						try
 						{
 							JSONObject status = response.optJSONObject("status");

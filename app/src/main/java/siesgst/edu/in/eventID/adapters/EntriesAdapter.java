@@ -194,6 +194,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 					@Override
 					public void onClick(View view)
 					{
+						
 						String url = context.getString(R.string.LIVE_URL)+"play?event_id="+session.getEventId()+"&uid="
 								+entriesModelList.get(getAdapterPosition()).getUid();
 						Log.v("play",url);
@@ -203,6 +204,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 							@Override
 							public void onResponse(String response)
 							{
+								Log.v("resp",response);
 								if(response.contains("success"))
 								{
 									Toast.makeText(context,"Status inverted",Toast.LENGTH_SHORT).show();
@@ -217,6 +219,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 								notifyDataSetChanged();
 							}
 						});
+						requestQueue.add(stringRequest);
 					}
 				});
 			}
