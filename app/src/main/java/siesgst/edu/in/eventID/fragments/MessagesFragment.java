@@ -37,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import siesgst.edu.in.eventID.R;
-import siesgst.edu.in.eventID.adapters.EntriesAdapter;
 import siesgst.edu.in.eventID.adapters.MessagesAdapter;
 import siesgst.edu.in.eventID.database.DatabaseManager;
 import siesgst.edu.in.eventID.model.MessagesModel;
@@ -108,10 +107,10 @@ public class MessagesFragment extends Fragment
 						Log.v("message",message);
 						if(message.length()>0)
 						{
-//							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
-//									+"&title="+session.getEventName()+"&body="+message;
 							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
-									+"&title=MazeBot"+"&body="+message;
+									+"&title="+session.getEventName()+"&body="+message;
+//							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
+//									+"&title=MazeBot"+"&body="+message;
 							Log.v("messageUrl",url);
 							stringRequest_ = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 							{
@@ -121,6 +120,7 @@ public class MessagesFragment extends Fragment
 									if(response.contains("success"))
 									{
 										Snackbar.make(getActivity().findViewById(R.id.fragment_messages),"Message sent",Snackbar.LENGTH_SHORT).show();
+										d.dismiss();
 									}
 								}
 							}, new Response.ErrorListener() {
@@ -166,24 +166,28 @@ public class MessagesFragment extends Fragment
 				{
 					JSONObject root = new JSONObject(response);
 					String status = root.optString("status");
-					JSONArray responseArray = root.optJSONArray("response");
-					for (int i = 0; i < responseArray.length(); i++)
+					if(status.contains("success"))
 					{
-						JSONObject object = responseArray.optJSONObject(i);
-						int id = object.optInt("id");
-						int event_id = object.optInt("event_id");
-						String title = object.optString("title");
-						String body = object.optString("body");
-						//messages.add(new MessagesModel(title, body));
-
-						HashMap<String, String> map = new HashMap<>();
-						map.put(Constants.MESSAGE_ID, String.valueOf(id));
-						map.put(Constants.MESSAGE_TITLE, title);
-						map.put(Constants.MESSAGE_BODY, body);
-
-						databaseManager.insertMessages(map);
+						JSONArray responseArray = root.optJSONArray("response");
+						for (int i = 0; i < responseArray.length(); i++)
+						{
+							JSONObject object = responseArray.optJSONObject(i);
+							int id = object.optInt("id");
+							int event_id = object.optInt("event_id");
+							String title = object.optString("title");
+							String body = object.optString("body");
+							//messages.add(new MessagesModel(title, body));
+							
+							HashMap<String, String> map = new HashMap<>();
+							map.put(Constants.MESSAGE_ID, String.valueOf(id));
+							map.put(Constants.MESSAGE_TITLE, title);
+							map.put(Constants.MESSAGE_BODY, body);
+							
+							databaseManager.insertMessages(map);
+						}
+						new getMessagesFromDb().execute();
 					}
-					new getMessagesFromDb().execute();
+					
 				}
 				catch (JSONException e)
 				{
