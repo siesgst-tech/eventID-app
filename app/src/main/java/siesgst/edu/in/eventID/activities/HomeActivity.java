@@ -24,7 +24,9 @@ public class HomeActivity extends AppCompatActivity
 {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 	SessionManager sessionManager;
-	
+	Fragment entriesFragment;
+	Fragment interestedFragment;
+	Fragment messagesFragment;
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
 	{
@@ -49,11 +51,11 @@ public class HomeActivity extends AppCompatActivity
 	private void setUpViewPager(ViewPager viewPager)
 	{
 		HomeTabLayoutAdapter adapter = new HomeTabLayoutAdapter(getSupportFragmentManager());
-		Fragment entriesFragment = new EntriesFragment();
+		entriesFragment= new EntriesFragment();
 		adapter.addFrag(entriesFragment, "Entries");
-		Fragment interestedFragment = new InterestedFragment();
+		interestedFragment = new InterestedFragment();
 		adapter.addFrag(interestedFragment, "Interested");
-		Fragment messagesFragment = new MessagesFragment();
+		messagesFragment= new MessagesFragment();
 		adapter.addFrag(messagesFragment, "Messages");
 		viewPager.setAdapter(adapter);
 	}

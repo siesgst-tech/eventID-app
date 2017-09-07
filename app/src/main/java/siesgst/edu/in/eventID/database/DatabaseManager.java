@@ -151,8 +151,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(Constants.INTERESTED_TABLE_NAME, new String[]{"*"}, null, null, null, null, null);
         //Cursorr cursoror=db.rawQuery("SELECT * FROM "+Constants.NOTIFICATIONS_TABLE_NAME+" ORDER BY "+Constants.NOTIFICATION_TIMESTAMP,null);
-        //for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
-        for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             EntriesModel notification_data = new EntriesModel();
             notification_data.setName(cursor.getString(cursor.getColumnIndex(Constants.INTERESTED_NAME)));
             notification_data.setContact(cursor.getString(cursor.getColumnIndex(Constants.INTERESTED_CONTACT)));
@@ -170,7 +169,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Cursor cursor = db.query(Constants.ENTRIES_TABLE_NAME, new String[]{"*"}, null, null, null, null, null);
         //Cursorr cursoror=db.rawQuery("SELECT * FROM "+Constants.NOTIFICATIONS_TABLE_NAME+" ORDER BY "+Constants.NOTIFICATION_TIMESTAMP,null);
         //for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
-        for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             EntriesModel notification_data = new EntriesModel();
             notification_data.setName(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_NAME)));
             notification_data.setUid(cursor.getString(cursor.getColumnIndex(Constants.ENTRIES_USER_ID)));

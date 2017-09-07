@@ -59,6 +59,7 @@ public class EntriesFragment extends Fragment
 	ConnectivityManager connectivityManager;
 	NetworkInfo activeNetwork;
 	ProgressBar progressBar;
+	View view;
 
 	/*
 	
@@ -76,20 +77,23 @@ public class EntriesFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.fragment_entries, container, false);
 
+		if(view==null) {
+			view = inflater.inflate(R.layout.fragment_entries, container, false);
+			progressBar = (ProgressBar)view.findViewById(R.id.entries_progress);
+			session = new SessionManager(getActivity());
+			getEntries();
+		}
+		view = inflater.inflate(R.layout.fragment_entries, container, false);
 		session = new SessionManager(getActivity());
 		databaseManager = new DatabaseManager(getActivity());
 		progressBar = (ProgressBar)view.findViewById(R.id.entries_progress);
-
 		connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 		activeNetwork = connectivityManager.getActiveNetworkInfo();
-
 		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		entriesAdapter=new EntriesAdapter(entriesModelList, 1, getActivity());
 		recyclerView.setAdapter(entriesAdapter);
-
 		//setHasOptionsMenu(true);
 		searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
 		if (searchView.isSearchOpen())
@@ -97,7 +101,6 @@ public class EntriesFragment extends Fragment
 			searchView.closeSearch();
 		}
 		Log.d("MaterialSearchView", "onCreateView");
-		
 		searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener()
 		{
 			@Override
@@ -116,15 +119,10 @@ public class EntriesFragment extends Fragment
 				return false;
 			}
 		});
-		
+
 		//getEntries();
 //		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 		new getEntriesFromDb().execute();
-
-		if (connectivityManager.getActiveNetworkInfo() != null) {
-			getEntries();
-		}
 		return view;
 	}
 	
@@ -189,7 +187,8 @@ public class EntriesFragment extends Fragment
 					@Override
 					public void onErrorResponse(VolleyError error)
 					{
-						
+						new getEntriesFromDb().execute();
+
 					}
 				});
 		
