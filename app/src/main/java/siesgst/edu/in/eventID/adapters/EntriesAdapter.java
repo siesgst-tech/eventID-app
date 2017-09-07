@@ -214,7 +214,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 							public void onResponse(String response)
 							{
 								progressBar.setVisibility(View.GONE);
-								Log.v("resp",response);
 								if(response.contains("success"))
 								{
 

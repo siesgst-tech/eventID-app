@@ -114,7 +114,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db.insert(Constants.ENTRIES_TABLE_NAME, null, values);
 
         } else {
-            db.update(Constants.ENTRIES_TABLE_NAME, values, Constants.ENTRIES_STATUS + " LIKE '" + map.get(Constants.ENTRIES_STATUS) + "'", null);
+            db.update(Constants.ENTRIES_TABLE_NAME, values, Constants.ENTRIES_USER_ID + " LIKE '" + map.get(Constants.ENTRIES_USER_ID) + "'", null);
         }
 
         cursor.close();

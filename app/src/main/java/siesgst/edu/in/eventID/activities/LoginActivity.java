@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity
 							@Override
 							public void onResponse(String response)
 							{
-								Log.v(TAG + "response", response);
+								//Log.v(TAG + "response", response);
 								if (response.contains("success"))
 								{
 									// parsing the response
