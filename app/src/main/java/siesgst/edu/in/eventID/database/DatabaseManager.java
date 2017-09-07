@@ -122,27 +122,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public void insertMessages(HashMap<String, String> map) {
         SQLiteDatabase db = getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.MESSAGES_TABLE_NAME + " WHERE " + Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
-		int flag = 0;
-		if (cursor.getCount() > 0)
-		{ flag = 1; }
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.MESSAGES_TABLE_NAME + " WHERE " + Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
+        int flag = 0;
+        if (cursor.getCount() > 0) {
+            flag = 1;
+        }
         ContentValues values = new ContentValues();
-		values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
+        values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
         values.put(Constants.MESSAGE_TITLE, map.get(Constants.MESSAGE_TITLE));
         values.put(Constants.MESSAGE_BODY, map.get(Constants.MESSAGE_BODY));
 
 //        db.insert(NOTIFICATIONS_TABLE_NAME, null, values);
 
-		if (flag == 0)
-		{
-        db.insert(Constants.MESSAGES_TABLE_NAME, null, values);
+        if (flag == 0) {
+            db.insert(Constants.MESSAGES_TABLE_NAME, null, values);
 
-		}
-		else
-		{
-			db.update(Constants.MESSAGES_TABLE_NAME, values, Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
-		}
-		cursor.close();
+        } else {
+            db.update(Constants.MESSAGES_TABLE_NAME, values, Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
+        }
+        cursor.close();
     }
 
     public ArrayList<EntriesModel> getAllInterested() {
@@ -198,20 +196,34 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
         return messagesList;
     }
-    
-    
-    
-    public void dropAll()
-    {
+
+    public void dropAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-		db.execSQL("DROP TABLE IF EXISTS "+ Constants.ENTRIES_TABLE_NAME);
-		db.execSQL(CREATE_ENTRIES_TABLE);
-		db.execSQL("DROP TABLE IF EXISTS "+ Constants.INTERESTED_TABLE_NAME);
-		db.execSQL(CREATE_INTERESTED_TABLE);
-		db.execSQL("DROP TABLE IF EXISTS "+ Constants.MESSAGES_TABLE_NAME);
-		db.execSQL(CREATE_MESSAGES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.ENTRIES_TABLE_NAME);
+        db.execSQL(CREATE_ENTRIES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.INTERESTED_TABLE_NAME);
+        db.execSQL(CREATE_INTERESTED_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.MESSAGES_TABLE_NAME);
+        db.execSQL(CREATE_MESSAGES_TABLE);
     }
-    
-        
+
+    public void toggleStatus(String uid){
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ Constants.ENTRIES_TABLE_NAME +" WHERE "+Constants.ENTRIES_USER_ID + " LIKE '"+uid+"'",null);
+
+        if (cursor.getString(1).equals("0")){
+            ContentValues values = new ContentValues();
+            values.put(Constants.ENTRIES_STATUS,"1");
+            db.update(Constants.ENTRIES_TABLE_NAME,values,Constants.ENTRIES_STATUS + " LIKE '"+uid+"'",null);
+        }
+        else {
+            ContentValues values = new ContentValues();
+            values.put(Constants.ENTRIES_STATUS,"0");
+            db.update(Constants.ENTRIES_TABLE_NAME,values,Constants.ENTRIES_STATUS + " LIKE '"+uid+"'",null);
+        }
+
+        cursor.close();
+    }
 
 }

@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.activities.RequestPermissionActivity;
+import siesgst.edu.in.eventID.database.DatabaseManager;
 import siesgst.edu.in.eventID.model.EntriesModel;
 import siesgst.edu.in.eventID.utils.SessionManager;
 
@@ -180,6 +181,8 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		
 		// interested
 		private TextView interested_name, interested_prn, interested_phone;
+
+		DatabaseManager databaseManager = new DatabaseManager(context);
 		
 		EntriesViewHolder(View itemView)
 		{
@@ -207,6 +210,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 								Log.v("resp",response);
 								if(response.contains("success"))
 								{
+									databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid());
 									Toast.makeText(context,"Status inverted",Toast.LENGTH_SHORT).show();
 									notifyDataSetChanged();
 								}
