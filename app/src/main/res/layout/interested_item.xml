@@ -27,6 +27,8 @@
                 android:paddingTop="4dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/interested_phone"
                 tools:text="I am interested" />
 
             <TextView
