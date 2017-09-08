@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -62,6 +64,7 @@ public class EntriesFragment extends Fragment
 	ProgressBar progressBar;
 	View view;
 	HomeTabLayoutAdapter adapter;
+	SwipeRefreshLayout swipeRefreshLayout;
 
 	/*
 	
@@ -84,12 +87,13 @@ public class EntriesFragment extends Fragment
 			view = inflater.inflate(R.layout.fragment_entries, container, false);
 			progressBar = (ProgressBar)view.findViewById(R.id.entries_progress);
 			session = new SessionManager(getActivity());
-			getEntries();
+			//getEntries();
 		}
 		view = inflater.inflate(R.layout.fragment_entries, container, false);
 		session = new SessionManager(getActivity());
 		databaseManager = new DatabaseManager(getActivity());
 		progressBar = (ProgressBar)view.findViewById(R.id.entries_progress);
+		swipeRefreshLayout = view.findViewById(R.id.swipeRefreshEntries);
 		connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 		activeNetwork = connectivityManager.getActiveNetworkInfo();
 		recyclerView = (RecyclerView) view.findViewById(R.id.entries_recycler);
@@ -123,6 +127,22 @@ public class EntriesFragment extends Fragment
 		//getEntries();
 //		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		new getEntriesFromDb().execute();
+
+		if (connectivityManager.getActiveNetworkInfo() != null) {
+			getEntries();
+		}
+
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				if(connectivityManager.getActiveNetworkInfo()!=null) {
+					getEntries();
+				}
+				else {
+					Toast.makeText(getActivity(), "You are OFFLINE !", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 		return view;
 	}
 	
@@ -135,7 +155,8 @@ public class EntriesFragment extends Fragment
 	
 	private void getEntries()
 	{
-		progressBar.setVisibility(View.VISIBLE);
+		//progressBar.setVisibility(View.VISIBLE);
+		swipeRefreshLayout.setRefreshing(true);
 		//entriesModelList = new ArrayList<EntriesModel>();
 		//Volley
 		final RequestQueue queue = Volley.newRequestQueue(getActivity());
@@ -212,7 +233,7 @@ public class EntriesFragment extends Fragment
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			progressBar.setVisibility(View.VISIBLE);
+			//progressBar.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -235,7 +256,8 @@ public class EntriesFragment extends Fragment
 				recyclerView.setAdapter(entriesAdapter);
 				entriesAdapter.notifyDataSetChanged();
 			}
-			progressBar.setVisibility(View.GONE);
+			//progressBar.setVisibility(View.GONE);
+			swipeRefreshLayout.setRefreshing(false);
 		}
 	}
 	

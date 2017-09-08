@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -60,6 +62,7 @@ public class MessagesFragment extends Fragment
 	ProgressBar progressBar;
 	DatabaseManager databaseManager;
 	MessagesAdapter messagesAdapter;
+	SwipeRefreshLayout swipeRefreshLayout;
 	
 	@Nullable
 	@Override
@@ -74,6 +77,7 @@ public class MessagesFragment extends Fragment
 		activeNetwork = connectivityManager.getActiveNetworkInfo();
 
 		recyclerView = (RecyclerView) view.findViewById(R.id.messages_recycler);
+		swipeRefreshLayout = view.findViewById(R.id.swipeRefreshMessages);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerView.setAdapter(new MessagesAdapter(messages));
 
@@ -137,6 +141,17 @@ public class MessagesFragment extends Fragment
 		if (connectivityManager.getActiveNetworkInfo() != null) {
 			getMessages();
 		}
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				if(connectivityManager.getActiveNetworkInfo()!=null) {
+					getMessages();
+				}
+				else {
+					Toast.makeText(getActivity(), "You are OFFLINE !", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 		return view;
 	}
 	
@@ -148,7 +163,11 @@ public class MessagesFragment extends Fragment
 	
 	public void getMessages()
 	{
-		progressBar.setVisibility(View.VISIBLE);
+		//if (visible == 0) {
+			swipeRefreshLayout.setRefreshing(true);
+		//}
+		//else progressBar.setVisibility(View.VISIBLE);
+//		progressBar.setVisibility(View.VISIBLE);
 
 		String url = getString(R.string.LIVE_URL) + session.getEventId() + "/messages";
 		stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
@@ -179,6 +198,12 @@ public class MessagesFragment extends Fragment
 							databaseManager.insertMessages(map);
 						}
 						new getMessagesFromDb().execute();
+						//if (visible == 0) {
+							//swipeRefreshLayout.setRefreshing(false);
+						//}
+//						else {
+//							progressBar.setVisibility(View.GONE);
+//						}
 					}
 					
 				}
@@ -224,7 +249,8 @@ public class MessagesFragment extends Fragment
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			progressBar.setVisibility(View.VISIBLE);
+			//progressBar.setVisibility(View.VISIBLE);
+			swipeRefreshLayout.setRefreshing(true);
 		}
 
 		@Override
@@ -247,7 +273,8 @@ public class MessagesFragment extends Fragment
 				recyclerView.setAdapter(messagesAdapter);
 				messagesAdapter.notifyDataSetChanged();
 			}
-			progressBar.setVisibility(View.GONE);
+			//progressBar.setVisibility(View.GONE);
+			swipeRefreshLayout.setRefreshing(false);
 		}
 	}
 }

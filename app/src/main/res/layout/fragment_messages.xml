@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
-                xmlns:app = "http://schemas.android.com/apk/res-auto"
-                xmlns:tools = "http://schemas.android.com/tools"
-                android:id = "@+id/fragment_messages"
-                android:layout_width = "match_parent"
-                android:layout_height = "match_parent"
-                android:orientation = "vertical"
-                tools:context = "siesgst.edu.in.eventID.activities.HomeActivity" >
-	
-	<android.support.v7.widget.RecyclerView
-	 android:id = "@+id/messages_recycler"
-	 android:layout_width = "match_parent"
-	 android:layout_height = "match_parent" />
-	
-	<android.support.design.widget.FloatingActionButton
-	 android:id = "@+id/new_message"
-	 android:layout_width = "wrap_content"
-	 android:layout_height = "wrap_content"
-	 android:layout_alignParentBottom = "true"
-	 android:layout_alignParentEnd = "true"
-	 android:layout_marginBottom = "16dp"
-	 android:layout_marginEnd = "16dp"
-	 android:background = "@color/green_tick"
-	 app:fabSize = "normal"
-	 app:rippleColor = "@color/green_tick" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_messages"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="siesgst.edu.in.eventID.activities.HomeActivity">
 
-	<ProgressBar
-		android:visibility="gone"
-		android:id="@+id/messages_progress"
-		android:layout_centerInParent="true"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshMessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/messages_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/new_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/green_tick"
+        app:fabSize="normal"
+        app:rippleColor="@color/green_tick" />
+
+    <ProgressBar
+        android:id="@+id/messages_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

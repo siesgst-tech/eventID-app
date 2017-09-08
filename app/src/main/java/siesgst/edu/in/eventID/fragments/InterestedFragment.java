@@ -7,12 +7,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -59,7 +61,8 @@ public class InterestedFragment extends Fragment
 	private StringRequest stringRequest;
 	private RequestQueue requestQueue;
     HomeTabLayoutAdapter adapter;
-	
+	SwipeRefreshLayout swipeRefreshLayout;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -72,7 +75,7 @@ public class InterestedFragment extends Fragment
 		activeNetwork = connectivityManager.getActiveNetworkInfo();
 //		setHasOptionsMenu(true);
 		progressBar = (ProgressBar) view.findViewById(R.id.interested_progress);
-		
+		swipeRefreshLayout = view.findViewById(R.id.swipeRefreshInterested);
 		recyclerView = (RecyclerView) view.findViewById(R.id.interested_recycler);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		entriesAdapter = new EntriesAdapter(entriesModels, 2, getActivity());
@@ -87,7 +90,18 @@ public class InterestedFragment extends Fragment
 		{
 			getInterestedList();
 		}
-		
+
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				if(connectivityManager.getActiveNetworkInfo()!=null) {
+					getInterestedList();
+				}
+				else {
+					Toast.makeText(getActivity(), "You are OFFLINE !", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 		
 		return view;
 	}
@@ -108,7 +122,8 @@ public class InterestedFragment extends Fragment
 	
 	public void getInterestedList()
 	{
-		progressBar.setVisibility(View.VISIBLE);
+		//progressBar.setVisibility(View.VISIBLE);
+		swipeRefreshLayout.setRefreshing(true);
 		String url = getString(R.string.LIVE_URL) + session.getEventId() + "/interested";
 		stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
 		{
@@ -178,7 +193,7 @@ public class InterestedFragment extends Fragment
 		protected void onPreExecute()
 		{
 			super.onPreExecute();
-			progressBar.setVisibility(View.VISIBLE);
+			//progressBar.setVisibility(View.VISIBLE);
 		}
 		
 		@Override
@@ -202,7 +217,8 @@ public class InterestedFragment extends Fragment
 				recyclerView.setAdapter(entriesAdapter);
 				entriesAdapter.notifyDataSetChanged();
 			}
-			progressBar.setVisibility(View.GONE);
+			//progressBar.setVisibility(View.GONE);
+			swipeRefreshLayout.setRefreshing(false);
 		}
 	}
 
