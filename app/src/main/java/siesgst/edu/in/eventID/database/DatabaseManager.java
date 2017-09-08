@@ -272,4 +272,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return result;
     }
 
+
+    public int getEntriesCount(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * FROM "+Constants.ENTRIES_TABLE_NAME,null);
+        int count=cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public int getInterestedCount(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * FROM "+Constants.INTERESTED_TABLE_NAME,null);
+        int count=cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
 }

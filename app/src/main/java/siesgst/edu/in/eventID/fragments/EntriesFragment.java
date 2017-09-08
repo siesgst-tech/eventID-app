@@ -36,6 +36,7 @@ import java.util.List;
 
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.adapters.EntriesAdapter;
+import siesgst.edu.in.eventID.adapters.HomeTabLayoutAdapter;
 import siesgst.edu.in.eventID.database.DatabaseManager;
 import siesgst.edu.in.eventID.model.EntriesModel;
 import siesgst.edu.in.eventID.utils.Constants;
@@ -60,6 +61,7 @@ public class EntriesFragment extends Fragment
 	NetworkInfo activeNetwork;
 	ProgressBar progressBar;
 	View view;
+	HomeTabLayoutAdapter adapter;
 
 	/*
 	
@@ -172,6 +174,8 @@ public class EntriesFragment extends Fragment
 								databaseManager.insertEntries(map);
 							}
 							//settingAdapter();
+							adapter.setEntriesCount(databaseManager.getEntriesCount());
+							adapter.notifyDataSetChanged();
 							new getEntriesFromDb().execute();
 						}
 						catch (Exception e)
@@ -255,5 +259,9 @@ public class EntriesFragment extends Fragment
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void setPagerAdapter(HomeTabLayoutAdapter pagerAdapter){
+		adapter=pagerAdapter;
 	}
 }

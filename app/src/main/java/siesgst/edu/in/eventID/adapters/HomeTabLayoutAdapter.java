@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import siesgst.edu.in.eventID.fragments.EntriesFragment;
+
 /**
  * Created by rohitramaswamy on 23/07/17.
  */
@@ -43,5 +45,13 @@ public class HomeTabLayoutAdapter extends FragmentPagerAdapter
 	public CharSequence getPageTitle(int position)
 	{
 		return mFragmentTitleList.get(position);
+	}
+
+	public void setEntriesCount(int count){
+		mFragmentTitleList.set(0,"Entries ("+count+")");
+	}
+	public void setInterestedCount(int count){
+		mFragmentTitleList.set(1,"Interested ("+count+")");
+
 	}
 }

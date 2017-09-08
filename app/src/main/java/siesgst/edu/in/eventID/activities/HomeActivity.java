@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import siesgst.edu.in.eventID.R;
 import siesgst.edu.in.eventID.adapters.HomeTabLayoutAdapter;
+import siesgst.edu.in.eventID.database.DatabaseManager;
 import siesgst.edu.in.eventID.fragments.EntriesFragment;
 import siesgst.edu.in.eventID.fragments.InterestedFragment;
 import siesgst.edu.in.eventID.fragments.MessagesFragment;
@@ -23,9 +24,10 @@ public class HomeActivity extends AppCompatActivity
 {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 	SessionManager sessionManager;
-	Fragment entriesFragment;
-	Fragment interestedFragment;
+	EntriesFragment entriesFragment;
+	InterestedFragment interestedFragment;
 	Fragment messagesFragment;
+	DatabaseManager databaseManager;
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
 	{
@@ -46,11 +48,14 @@ public class HomeActivity extends AppCompatActivity
 	
 	private void setUpViewPager(ViewPager viewPager)
 	{
+		databaseManager= new DatabaseManager(HomeActivity.this);
 		HomeTabLayoutAdapter adapter = new HomeTabLayoutAdapter(getSupportFragmentManager());
 		entriesFragment= new EntriesFragment();
-		adapter.addFrag(entriesFragment, "Entries");
+		entriesFragment.setPagerAdapter(adapter);
+		adapter.addFrag(entriesFragment, "Entries (-)");
 		interestedFragment = new InterestedFragment();
-		adapter.addFrag(interestedFragment, "Interested");
+		interestedFragment.setPagerAdapter(adapter);
+		adapter.addFrag(interestedFragment, "Interested (-)");
 		messagesFragment= new MessagesFragment();
 		adapter.addFrag(messagesFragment, "Messages");
 		viewPager.setAdapter(adapter);
@@ -90,5 +95,7 @@ public class HomeActivity extends AppCompatActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+
 	
 }
