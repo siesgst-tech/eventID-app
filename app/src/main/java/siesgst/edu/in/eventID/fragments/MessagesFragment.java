@@ -120,6 +120,7 @@ public class MessagesFragment extends Fragment
 								{
 									if(response.contains("success"))
 									{
+										getMessages();
 										Snackbar.make(getActivity().findViewById(R.id.fragment_messages),"Message sent",Snackbar.LENGTH_SHORT).show();
 										d.dismiss();
 									}
@@ -157,6 +158,8 @@ public class MessagesFragment extends Fragment
 	
 	public void getMessages()
 	{
+		progressBar.setVisibility(View.VISIBLE);
+
 		String url = getString(R.string.LIVE_URL) + session.getEventId() + "/messages";
 		stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
 		{

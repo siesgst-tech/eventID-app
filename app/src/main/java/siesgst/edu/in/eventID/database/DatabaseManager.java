@@ -127,17 +127,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             flag = 1;
         }
-        ContentValues values = new ContentValues();
-        values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
-        values.put(Constants.MESSAGE_TITLE, map.get(Constants.MESSAGE_TITLE));
-        values.put(Constants.MESSAGE_BODY, map.get(Constants.MESSAGE_BODY));
+//        ContentValues values = new ContentValues();
+//        values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
+//        values.put(Constants.MESSAGE_TITLE, map.get(Constants.MESSAGE_TITLE));
+//        values.put(Constants.MESSAGE_BODY, map.get(Constants.MESSAGE_BODY));
 
 //        db.insert(NOTIFICATIONS_TABLE_NAME, null, values);
 
         if (flag == 0) {
+            ContentValues values = new ContentValues();
+            values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
+            values.put(Constants.MESSAGE_TITLE, map.get(Constants.MESSAGE_TITLE));
+            values.put(Constants.MESSAGE_BODY, map.get(Constants.MESSAGE_BODY));
             db.insert(Constants.MESSAGES_TABLE_NAME, null, values);
 
         } else {
+            ContentValues values = new ContentValues();
+            //values.put(Constants.MESSAGE_ID, map.get(Constants.MESSAGE_ID));
+            values.put(Constants.MESSAGE_TITLE, map.get(Constants.MESSAGE_TITLE));
+            values.put(Constants.MESSAGE_BODY, map.get(Constants.MESSAGE_BODY));
             db.update(Constants.MESSAGES_TABLE_NAME, values, Constants.MESSAGE_ID + " LIKE '" + map.get(Constants.MESSAGE_ID) + "'", null);
         }
         cursor.close();
