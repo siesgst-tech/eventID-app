@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity
 						// user is connected to the internet
 						progressBar.setVisibility(View.VISIBLE);
 						String url = getResources().getString(R.string.LIVE_URL) + "login?email=" + email_entered + "&password=" + password_entered;
-						Log.v("url", url);
 						stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 						{
 							@Override
@@ -98,7 +97,6 @@ public class LoginActivity extends AppCompatActivity
 										event_name = content.optString("event_name");
 										email_entered = content.optString("email");
 										event_id = content.optInt("event_id");
-										Log.v("details", id + " " + name + "  " + email_entered + "  " + String.valueOf(event_id));
 									}
 									catch (JSONException e)
 									{
@@ -108,8 +106,6 @@ public class LoginActivity extends AppCompatActivity
 //									first_name = email_entered.substring(0, email_entered.indexOf("."));
 //									last_name = email_entered.substring((email_entered.indexOf(".") + 1), email_entered.indexOf("1"));
 									sessionManager.createLoginSession(email_entered, name, event_name, event_id);
-									Log.v(TAG, "email: " + email_entered);
-									Log.v(TAG, "password: " + password_entered);
 									progressBar.setVisibility(View.INVISIBLE);
 									finish();
 									startActivity(new Intent(LoginActivity.this, HomeActivity.class));
@@ -138,7 +134,6 @@ public class LoginActivity extends AppCompatActivity
 							{
 								progressBar.setVisibility(View.INVISIBLE);
 								Snackbar.make(findViewById(R.id.activity_login), "Please check your credentials", Snackbar.LENGTH_SHORT).show();
-								Log.v(TAG, error.toString());
 							}
 						});
 						

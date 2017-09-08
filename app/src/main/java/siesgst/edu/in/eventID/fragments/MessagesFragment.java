@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,16 +102,11 @@ public class MessagesFragment extends Fragment
 					public void onClick(View arg0)
 					{
 						// call message api here
-						String message = contactEditText.getText().toString().trim();
-						Log.v("message",message);
+						final String message = contactEditText.getText().toString().trim();
 						if(message.length()>0)
 						{
-							Log.v("event_name",session.getEventName());
 							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
 									+"&title="+session.getEventName()+"&body="+message;
-//							String url = getString(R.string.LIVE_URL)+"message/add?event_id="+session.getEventId()
-//									+"&title=MazeBot"+"&body="+message;
-							Log.v("messageUrl",url);
 							stringRequest_ = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
 							{
 								@Override
@@ -129,7 +123,6 @@ public class MessagesFragment extends Fragment
 								@Override
 								public void onErrorResponse(VolleyError error)
 								{
-									Log.v("onError",error.toString());
 									Snackbar.make(getActivity().findViewById(R.id.fragment_messages),"Please try again later",Snackbar.LENGTH_SHORT).show();
 								}
 							});
@@ -139,11 +132,8 @@ public class MessagesFragment extends Fragment
 				});
 			}
 		});
-		//getMessages();
-		//setAdapter();
 		new getMessagesFromDb().execute();
-
-
+		
 		if (connectivityManager.getActiveNetworkInfo() != null) {
 			getMessages();
 		}
@@ -180,7 +170,6 @@ public class MessagesFragment extends Fragment
 							int event_id = object.optInt("event_id");
 							String title = object.optString("title");
 							String body = object.optString("body");
-							//messages.add(new MessagesModel(title, body));
 							
 							HashMap<String, String> map = new HashMap<>();
 							map.put(Constants.MESSAGE_ID, String.valueOf(id));
@@ -234,7 +223,6 @@ public class MessagesFragment extends Fragment
 
 		@Override
 		protected void onPreExecute() {
-			Log.d("MessagesFragment", "onPreExecute ");
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
 		}
@@ -249,7 +237,6 @@ public class MessagesFragment extends Fragment
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			super.onPostExecute(aVoid);
-			Log.d("MessagesFragment", "onPostExecute entriesModels size=" + messages.size());
 			if (messages.size() == 0) {
 				//errorLayout.setVisibility(View.VISIBLE);
 				//errorText.setText("Messages from events you participate in\nwill appear here.");
@@ -264,31 +251,3 @@ public class MessagesFragment extends Fragment
 		}
 	}
 }
-
-/*
-
-/api/eventhead/id/messages
-
-{
-    "status": "success",
-    "response": [
-        {
-            "id": 1,
-            "event_id": 2,
-            "title": "test",
-            "body": "testing....",
-            "created_at": "2017-09-05 00:00:00",
-            "updated_at": null
-        },
-        {
-            "id": 2,
-            "event_id": 2,
-            "title": "asdadadad",
-            "body": "asbdadhadajvjvvvfvafs ban c scka scn absckacsn ac",
-            "created_at": "2017-09-05 00:00:00",
-            "updated_at": null
-        }
-    ]
-}
-
-*/

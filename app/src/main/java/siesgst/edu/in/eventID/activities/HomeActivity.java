@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -43,9 +42,6 @@ public class HomeActivity extends AppCompatActivity
 		
 		setUpViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
-		Log.v(LOG_TAG, "email: " + sessionManager.getEmail());
-		Log.v(LOG_TAG, "full name: " + sessionManager.getFullName());
-		
 	}
 	
 	private void setUpViewPager(ViewPager viewPager)

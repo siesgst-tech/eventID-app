@@ -100,7 +100,6 @@ public class EntriesFragment extends Fragment
 		{
 			searchView.closeSearch();
 		}
-		Log.d("MaterialSearchView", "onCreateView");
 		searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener()
 		{
 			@Override
@@ -115,7 +114,6 @@ public class EntriesFragment extends Fragment
 			public boolean onQueryTextChange(String newText)
 			{
 				entriesAdapter.filter(newText);
-				Log.d("MaterialSearchView", "onQueryTextChange");
 				return false;
 			}
 		});
@@ -130,7 +128,6 @@ public class EntriesFragment extends Fragment
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		Log.d("MaterialSearchView", "onCreate");
 		
 	}
 	
@@ -142,7 +139,6 @@ public class EntriesFragment extends Fragment
 		final RequestQueue queue = Volley.newRequestQueue(getActivity());
 		//Volley JsonObjectRequest
 		String jsonUrl = getString(R.string.LIVE_URL)+ session.getEventId() + "/entries";
-		Log.d("entriesUrl",jsonUrl);
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest
 				(Request.Method.GET, jsonUrl, null, new Response.Listener<JSONObject>()
 				{
@@ -166,7 +162,6 @@ public class EntriesFragment extends Fragment
 								contact = messageObject.optString("contact");
 								status1 = messageObject.optString("status");
 								//entriesModelList.add(new EntriesModel(name,uid,id,receipt_no,email,contact,status1));
-								Log.d("PlayStatusCheck","API name= "+name+" status="+status1);
 
 								HashMap<String, String> map = new HashMap<>();
 								map.put(Constants.ENTRIES_ID, id);
@@ -212,7 +207,6 @@ public class EntriesFragment extends Fragment
 
 		@Override
 		protected void onPreExecute() {
-			Log.d("EntriesFragment", "onPreExecute ");
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
 		}
@@ -227,7 +221,6 @@ public class EntriesFragment extends Fragment
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			super.onPostExecute(aVoid);
-			Log.d("EntriesFragment", "onPostExecute entriesModels size=" + entriesModelList.size());
 			if (entriesModelList.size() == 0) {
 				//errorLayout.setVisibility(View.VISIBLE);
 				//errorText.setText("Messages from events you participate in\nwill appear here.");
@@ -248,13 +241,11 @@ public class EntriesFragment extends Fragment
 		getActivity().getMenuInflater().inflate(R.menu.menu_fragments, menu);
 		MenuItem item = menu.findItem(R.id.action_search);
 		searchView.setMenuItem(item);
-		Log.d("MaterialSearchView", "onCreateOptionsMenu");
 		
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d("MaterialSearchView", "onOptionsItemSelected");
 		
 		int id = item.getItemId();
 		

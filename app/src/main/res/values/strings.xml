@@ -1,5 +1,5 @@
 <resources >
-    <string name = "app_name" >Event</string >
+    <string name = "app_name" >EventId</string >
     <string name = "forgot_password_msg" >Enter your email address to reset your password.You may need to check your spam folder or unblock no-reply@aviato.tk</string >
     <string name = "title_activity_home" >Home</string >
     <string name = "action_settings" >Settings</string >

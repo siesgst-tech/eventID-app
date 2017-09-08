@@ -27,7 +27,6 @@ public class RequestPermissionActivity extends AppCompatActivity
 	
 	public static void startInstalledAppDetailsActivity(final Activity context)
 	{
-		Log.v("perm", "1");
 		if (context == null)
 		{
 			return;
@@ -75,13 +74,10 @@ public class RequestPermissionActivity extends AppCompatActivity
 				// if result is cancelled the array would be empty
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
 				{
-					Log.v("perm ac", "[if]->perm granted");
 					doThisOnPermissionGranted();
 				}
 				else
 				{
-					Log.v("perm ac", "[else]->perm denied");
-					
 					String permission = Manifest.permission.CALL_PHONE;
 					
 					if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
@@ -89,7 +85,6 @@ public class RequestPermissionActivity extends AppCompatActivity
 						boolean showRationale = shouldShowRequestPermissionRationale(permission);
 						if (!showRationale)
 						{
-							Log.v("perm ac", "[else[if[if]]->user also CHECKED never ask again");
 							cardView.setOnClickListener(new View.OnClickListener()
 							{
 								@Override
@@ -120,13 +115,10 @@ public class RequestPermissionActivity extends AppCompatActivity
 	protected void onResume()
 	{
 		super.onResume();
-		Log.v("perm ac", "onResume called");
-		
 		if (ContextCompat.checkSelfPermission(RequestPermissionActivity.this,
 				Manifest.permission.CALL_PHONE)
 				== PackageManager.PERMISSION_GRANTED)
 		{
-			Log.v("perm ac", "doThisOnPermissionGranted CALLED got on onResume");
 			setResult(Activity.RESULT_OK);
 			finish();
 		}
@@ -134,7 +126,6 @@ public class RequestPermissionActivity extends AppCompatActivity
 	
 	private void doThisOnPermissionGranted()
 	{
-		Log.v("perm ac", "doThisOnPermissionGranted CALLED");
 		setResult(Activity.RESULT_OK);
 		finish();
 	}
@@ -182,7 +173,6 @@ public class RequestPermissionActivity extends AppCompatActivity
 		}
 		else
 		{
-			Log.v("perm ac", " ALREADY PERMISSION_GRANTED");
 			doThisOnPermissionGranted();
 		}
 	}

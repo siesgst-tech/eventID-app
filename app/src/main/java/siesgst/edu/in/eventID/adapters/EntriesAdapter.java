@@ -7,16 +7,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,13 +44,13 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 	// type: 1 = entries; 2 = interested
 	// status: 1 = played; 2 = not played
 	public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1232;
-	List<EntriesModel> entriesModelList,entriesModelListCopy;
+	List<EntriesModel> entriesModelList, entriesModelListCopy;
 	int type;
 	Context context;
 	SessionManager session;
 	StringRequest stringRequest;
 	RequestQueue requestQueue;
-
+	
 	public EntriesAdapter(List<EntriesModel> entriesModelList, int type, Context context)
 	{
 		this.entriesModelList = entriesModelList;
@@ -92,14 +91,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 			if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("1"))
 			{
 				// played
-				Log.d("PlayStatusCheck",entriesModelList.get(position).getName()+" check");
 				holder.entry_tick.setText(context.getString(R.string.fa_check_square_o));
 			}
 			else if (entriesModelList.get(position).getStatus1().equalsIgnoreCase("0"))
 			{
 				// not played
-				Log.d("PlayStatusCheck",entriesModelList.get(position).getName()+" uncheck");
-
+				
 				holder.entry_tick.setText(context.getString(R.string.fa_square_o));
 			}
 		}
@@ -119,18 +116,16 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		else
 		{ return (int) entriesModelList.size(); }
 	}
-
+	
 	public void filter(String query)
 	{
 		/*
 		entries :1
 		interested :2
 		 */
-		Log.d("MaterialSearchView", "filter  " + query);
-		Log.d("MaterialSearchView",String.valueOf(type));
 		query = query.toLowerCase(Locale.getDefault());
 		entriesModelList.clear();
-
+		
 		if (query.length() == 0)
 		{
 			entriesModelList.addAll(entriesModelListCopy);
@@ -139,12 +134,9 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 		{
 			for (int i = 0; i < entriesModelListCopy.size(); i++)
 			{
-				Log.d("inside for",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
 //				if (type == 1)
 //				{
-				Log.d("EntriesAdapter", "entries search=" + query);
 				//for entries
-				Log.d("inside if type 1",entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()));
 				if (entriesModelListCopy.get(i).getName().toLowerCase(Locale.getDefault()).contains(query) |
 						entriesModelListCopy.get(i).getUid().toLowerCase(Locale.getDefault()).contains(query))
 				{
@@ -166,27 +158,18 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				*/
 			}
 		}
-
-		if (entriesModelList.size() == 0)
-		{
-			Log.d("MaterialSearchView","no results");
-		}
-		else
-		{
-			Log.d("MaterialSearchView","Oops! something went wrong");
-		}
+		
 		notifyDataSetChanged();
 	}
 	
 	class EntriesViewHolder extends RecyclerView.ViewHolder
 	{
-		// entries
-		private TextView entry_name, entry_prn, entry_tick;
-		
-		// interested
-		private TextView interested_name, interested_prn, interested_phone;
 		ProgressBar progressBar;
 		DatabaseManager databaseManager = new DatabaseManager(context);
+		// entries
+		private TextView entry_name, entry_prn, entry_tick;
+		// interested
+		private TextView interested_name, interested_prn, interested_phone;
 		
 		EntriesViewHolder(View itemView)
 		{
@@ -197,50 +180,58 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 				entry_name = (TextView) itemView.findViewById(R.id.entry_name);
 				entry_prn = (TextView) itemView.findViewById(R.id.event_prn);
 				entry_tick = (TextView) itemView.findViewById(R.id.entry_tick);
-				progressBar=(ProgressBar)itemView.findViewById(R.id.entry_progress_bar);
-				entry_tick.setOnClickListener(new View.OnClickListener() {
+				progressBar = (ProgressBar) itemView.findViewById(R.id.entry_progress_bar);
+				entry_tick.setOnClickListener(new View.OnClickListener()
+				{
 					@Override
-					public void onClick(View view)
+					public void onClick(final View view)
 					{
-						progressBar.setVisibility(View.VISIBLE);
-						
-						String url = context.getString(R.string.LIVE_URL)+"play?event_id="+session.getEventId()+"&uid="
-								+entriesModelList.get(getAdapterPosition()).getUid();
-						Log.v("play",url);
-						stringRequest = new StringRequest(Request.Method.POST, url
-								, new Response.Listener<String>()
+						if (session.checkNet())
 						{
-							@Override
-							public void onResponse(String response)
+							progressBar.setVisibility(View.VISIBLE);
+							
+							String url = context.getString(R.string.LIVE_URL) + "play?event_id=" + session.getEventId() + "&uid="
+									+ entriesModelList.get(getAdapterPosition()).getUid();
+							stringRequest = new StringRequest(Request.Method.POST, url
+									, new Response.Listener<String>()
 							{
-								progressBar.setVisibility(View.GONE);
-								if(response.contains("success"))
+								@Override
+								public void onResponse(String response)
 								{
-
-									if(entriesModelList.get(getAdapterPosition()).getStatus1().equals("0")) {
-										entriesModelList.get(getAdapterPosition()).setStatus1("1");
-										databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid(),"1");
+									progressBar.setVisibility(View.GONE);
+									if (response.contains("success"))
+									{
+										if (entriesModelList.get(getAdapterPosition()).getStatus1().contains("0"))
+										{
+											entriesModelList.get(getAdapterPosition()).setStatus1("1");
+											databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid(), "1");
+										}
+										else
+										{
+											entriesModelList.get(getAdapterPosition()).setStatus1("0");
+											databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid(), "0");
+											
+										}
+										Snackbar.make(view, "Status inverted", Snackbar.LENGTH_SHORT).show();
+										notifyDataSetChanged();
 									}
-									else{
-										entriesModelList.get(getAdapterPosition()).setStatus1("0");
-										databaseManager.toggleStatus(entriesModelList.get(getAdapterPosition()).getUid(),"0");
-
-									}
-									Toast.makeText(context,"Status inverted",Toast.LENGTH_SHORT).show();
+								}
+							}, new Response.ErrorListener()
+							{
+								@Override
+								public void onErrorResponse(VolleyError error)
+								{
+									progressBar.setVisibility(View.GONE);
+									
 									notifyDataSetChanged();
 								}
-							}
-						}, new Response.ErrorListener() {
-							@Override
-							public void onErrorResponse(VolleyError error)
-							{
-								progressBar.setVisibility(View.GONE);
-
-								Log.v("onError",error.toString());
-								notifyDataSetChanged();
-							}
-						});
-						requestQueue.add(stringRequest);
+							});
+							requestQueue.add(stringRequest);
+						}
+						else
+						{
+							Snackbar.make(view, "Please check your internet connection and try again", Snackbar.LENGTH_SHORT).show();
+						}
 					}
 				});
 			}
@@ -258,19 +249,16 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 						if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE)
 								!= PackageManager.PERMISSION_GRANTED)
 						{
-							Log.v("perm", "[if]->we do not have permission");
 							
 							// Should we show an explanation?
 							if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
 									Manifest.permission.CALL_PHONE))
 							{
 								// we need to show an explanation
-								Log.v("perm", "[if[if]]->taking user to request permission activity");
 								context.startActivity(new Intent(context, RequestPermissionActivity.class));
 							}
 							else
 							{
-								Log.v("perm", "[if[else]]-> asking permission");
 								ActivityCompat.requestPermissions((Activity) context,
 										new String[]{Manifest.permission.CALL_PHONE},
 										MY_PERMISSIONS_REQUEST_CALL_PHONE);
@@ -279,7 +267,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 						}
 						else
 						{
-							Log.v("perm", "[else]->we have permission");
 							String tel = "tel:" + entriesModelList.get(getAdapterPosition()).getContact();
 							Intent intent = new Intent();
 							intent.setAction(Intent.ACTION_CALL);
